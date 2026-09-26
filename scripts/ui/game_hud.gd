@@ -1,11 +1,14 @@
 extends Control
 
 const GlobalConstants = preload("res://scripts/core/global_constants.gd")
+const ThemeManager = preload("res://scripts/core/theme_manager.gd")
 
 signal hint_requested()
 signal restart_requested()
 signal pause_requested()
 
+@onready var top_bar: PanelContainer = $TopBar
+@onready var progress_pill: Panel = $TopBar/Margin/HBox/CenterBox/ProgressPill
 @onready var level_label: Label = %LevelLabel
 @onready var timer_label: Label = %TimerLabel
 @onready var hearts_label: Label = %HeartsLabel
@@ -31,8 +34,22 @@ func _on_level_started(level_id: int) -> void:
 	_update_level_ui(level_id)
 
 func _update_level_ui(level_id: int) -> void:
-	level_label.text = "Level %d" % level_id
+	var theme: Dictionary = ThemeManager.get_theme_for_level(level_id)
+	level_label.text = "Level %d · %s" % [level_id, theme["name"]]
 	timer_label.text = "⏱ 0s"
+	
+	# Apply Theme header styling
+	var current_sb = top_bar.get_theme_stylebox("panel")
+	if current_sb is StyleBoxFlat:
+		var new_sb = current_sb.duplicate() as StyleBoxFlat
+		new_sb.bg_color = theme["header_color"]
+		top_bar.add_theme_stylebox_override("panel", new_sb)
+		
+	var cur_prog_sb = progress_pill.get_theme_stylebox("panel")
+	if cur_prog_sb is StyleBoxFlat:
+		var new_prog_sb = cur_prog_sb.duplicate() as StyleBoxFlat
+		new_prog_sb.bg_color = theme["header_dark"]
+		progress_pill.add_theme_stylebox_override("panel", new_prog_sb)
 
 func _on_hearts_changed(hearts_count: int) -> void:
 	var hearts_str = ""

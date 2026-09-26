@@ -2,8 +2,10 @@ extends Control
 
 const GlobalConstants = preload("res://scripts/core/global_constants.gd")
 const LevelManager = preload("res://scripts/core/level_manager.gd")
+const ThemeManager = preload("res://scripts/core/theme_manager.gd")
 
-@onready var grid_container: GridContainer = %LevelGrid
+@onready var scroll_container: ScrollContainer = %Scroll
+@onready var chapters_container: VBoxContainer = %ChaptersContainer
 @onready var back_button: Button = %BackButton
 
 func _ready() -> void:
@@ -16,43 +18,149 @@ func _on_visibility_changed() -> void:
 		_populate_levels()
 
 func _populate_levels() -> void:
-	# Clear existing cards
-	for child in grid_container.get_children():
+	# Clear existing children
+	for child in chapters_container.get_children():
 		child.queue_free()
 		
 	var total_levels: int = LevelManager.get_total_levels_count()
 	var highest_unlocked: int = SaveManager.get_highest_unlocked_level()
+	var target_focus_node: Control = null
 	
-	for lvl_id in range(1, total_levels + 1):
-		var is_unlocked: bool = lvl_id <= highest_unlocked
-		var stars: int = SaveManager.get_level_stars(lvl_id)
-		
-		var card: Button = Button.new()
-		card.custom_minimum_size = Vector2(100, 110)
-		card.disabled = not is_unlocked
-		
-		# Format card text
-		var card_text: String = "Level %d\n" % lvl_id
-		if is_unlocked:
-			var stars_text: String = ""
-			for s in range(stars):
-				stars_text += "★"
-			for s in range(3 - stars):
-				stars_text += "☆"
-			card_text += stars_text
-		else:
-			card_text += "🔒"
+	for world in ThemeManager.WORLDS:
+		var start_lvl: int = int(world["level_start"])
+		var end_lvl: int = mini(int(world["level_end"]), total_levels)
+		if start_lvl > total_levels:
+			break
 			
-		card.text = card_text
-		card.alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var chapter_vbox = VBoxContainer.new()
+		chapter_vbox.add_theme_constant_override("separation", 12)
 		
-		var level_to_load = lvl_id
-		card.pressed.connect(func():
-			AudioManager.play_tap()
-			GameManager.start_level(level_to_load)
-		)
+		# Compute stars in this chapter
+		var world_stars: int = 0
+		var world_unlocked_any: bool = false
+		for lvl in range(start_lvl, end_lvl + 1):
+			world_stars += SaveManager.get_level_stars(lvl)
+			if lvl <= highest_unlocked:
+				world_unlocked_any = true
+				
+		var max_possible_stars: int = (end_lvl - start_lvl + 1) * 3
 		
-		grid_container.add_child(card)
+		# Chapter Header Panel
+		var header_panel = PanelContainer.new()
+		var header_style = StyleBoxFlat.new()
+		var h_color: Color = world["header_color"]
+		header_style.bg_color = Color(h_color.r, h_color.g, h_color.b, 0.12)
+		header_style.border_color = h_color
+		header_style.border_width_left = 3
+		header_style.border_width_top = 0
+		header_style.border_width_right = 0
+		header_style.border_width_bottom = 0
+		header_style.corner_radius_top_left = 8
+		header_style.corner_radius_bottom_left = 8
+		header_style.corner_radius_top_right = 8
+		header_style.corner_radius_bottom_right = 8
+		header_style.content_margin_left = 16
+		header_style.content_margin_right = 16
+		header_style.content_margin_top = 8
+		header_style.content_margin_bottom = 8
+		header_panel.add_theme_stylebox_override("panel", header_style)
+		
+		var header_hbox = HBoxContainer.new()
+		var title_label = Label.new()
+		title_label.text = "World %d · %s" % [world["world_id"], world["name"]]
+		title_label.add_theme_font_size_override("font_size", 20)
+		title_label.add_theme_color_override("font_color", h_color)
+		title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		header_hbox.add_child(title_label)
+		
+		var progress_label = Label.new()
+		if world_unlocked_any:
+			progress_label.text = "★ %d / %d" % [world_stars, max_possible_stars]
+			progress_label.add_theme_color_override("font_color", h_color.lerp(Color.BLACK, 0.2))
+		else:
+			progress_label.text = "🔒 Locked"
+			progress_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5, 0.8))
+		progress_label.add_theme_font_size_override("font_size", 16)
+		header_hbox.add_child(progress_label)
+		
+		header_panel.add_child(header_hbox)
+		chapter_vbox.add_child(header_panel)
+		
+		# Grid for this chapter
+		var grid = GridContainer.new()
+		grid.columns = 4
+		grid.add_theme_constant_override("h_separation", 12)
+		grid.add_theme_constant_override("v_separation", 12)
+		
+		for lvl_id in range(start_lvl, end_lvl + 1):
+			var is_unlocked: bool = lvl_id <= highest_unlocked
+			var stars: int = SaveManager.get_level_stars(lvl_id)
+			var is_current: bool = (lvl_id == highest_unlocked)
+			
+			var card: Button = Button.new()
+			card.custom_minimum_size = Vector2(0, 78)
+			card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			card.disabled = not is_unlocked
+			card.alignment = HORIZONTAL_ALIGNMENT_CENTER
+			
+			var card_style = StyleBoxFlat.new()
+			card_style.corner_radius_top_left = 10
+			card_style.corner_radius_top_right = 10
+			card_style.corner_radius_bottom_left = 10
+			card_style.corner_radius_bottom_right = 10
+			
+			if not is_unlocked:
+				card_style.bg_color = Color(0.9, 0.9, 0.9, 0.6)
+				card_style.border_color = Color(0.8, 0.8, 0.8, 0.4)
+				card_style.border_width_left = 1
+				card_style.border_width_right = 1
+				card_style.border_width_top = 1
+				card_style.border_width_bottom = 1
+				card.text = "%d\n🔒" % lvl_id
+			else:
+				if is_current:
+					card_style.bg_color = Color.WHITE
+					card_style.border_color = h_color
+					card_style.border_width_left = 2
+					card_style.border_width_right = 2
+					card_style.border_width_top = 2
+					card_style.border_width_bottom = 2
+					target_focus_node = card
+				else:
+					card_style.bg_color = Color.WHITE
+					card_style.border_color = Color(0.85, 0.85, 0.85, 0.8)
+					card_style.border_width_left = 1
+					card_style.border_width_right = 1
+					card_style.border_width_top = 1
+					card_style.border_width_bottom = 1
+				
+				var stars_text: String = ""
+				for s in range(stars):
+					stars_text += "★"
+				for s in range(3 - stars):
+					stars_text += "☆"
+				card.text = "%d\n%s" % [lvl_id, stars_text]
+				
+			card.add_theme_stylebox_override("normal", card_style)
+			card.add_theme_stylebox_override("disabled", card_style)
+			
+			var level_to_load = lvl_id
+			card.pressed.connect(func():
+				AudioManager.play_tap()
+				GameManager.start_level(level_to_load)
+			)
+			grid.add_child(card)
+			
+		chapter_vbox.add_child(grid)
+		chapters_container.add_child(chapter_vbox)
+		
+	# Scroll to target focus node if visible
+	if target_focus_node != null and is_instance_valid(target_focus_node):
+		_scroll_to_node.call_deferred(target_focus_node)
+
+func _scroll_to_node(node: Control) -> void:
+	if scroll_container != null and is_instance_valid(node):
+		scroll_container.ensure_control_visible(node)
 
 func _on_back_pressed() -> void:
 	AudioManager.play_tap()

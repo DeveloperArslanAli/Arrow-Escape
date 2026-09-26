@@ -1,7 +1,9 @@
 extends Node
 
 const GlobalConstants = preload("res://scripts/core/global_constants.gd")
+const ThemeManager = preload("res://scripts/core/theme_manager.gd")
 
+@onready var background: ColorRect = $Background
 @onready var game_board: Node2D = $GameBoard
 @onready var ui_layer: CanvasLayer = $UILayer
 @onready var game_hud: Control = $UILayer/GameHUD
@@ -14,6 +16,7 @@ const GlobalConstants = preload("res://scripts/core/global_constants.gd")
 
 func _ready() -> void:
 	GameManager.state_changed.connect(_on_state_changed)
+	GameManager.level_started.connect(_on_level_started)
 	game_hud.hint_requested.connect(_on_hint_requested)
 	main_menu.open_settings_requested.connect(func(): settings_modal.show())
 	pause_modal.open_settings_requested.connect(func(): settings_modal.show())
@@ -22,6 +25,11 @@ func _ready() -> void:
 	get_viewport().size_changed.connect(_apply_safe_area)
 	
 	_on_state_changed(GameManager.current_state)
+
+func _on_level_started(level_id: int) -> void:
+	var theme: Dictionary = ThemeManager.get_theme_for_level(level_id)
+	var tween = create_tween()
+	tween.tween_property(background, "color", theme["bg_color"], 0.35)
 
 func _apply_safe_area() -> void:
 	var safe_area: Rect2i = DisplayServer.get_display_safe_area()
