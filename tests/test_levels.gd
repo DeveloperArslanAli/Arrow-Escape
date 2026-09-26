@@ -53,26 +53,48 @@ static func _validate_level_file(path: String) -> bool:
 	
 	var occupied_coords: Dictionary = {}
 	for arrow in arrows:
-		var r: int = int(arrow["row"])
-		var c: int = int(arrow["column"])
-		var coord = Vector2i(c, r)
+		var arrow_id: String = str(arrow.get("id", ""))
 		
-		# Bounds check
-		if r < 0 or r >= rows or c < 0 or c >= cols:
-			push_error("FAIL: Arrow %s out of bounds in %s" % [arrow.get("id", ""), path])
-			return false
-			
-		# Duplicate check
-		if occupied_coords.has(coord):
-			push_error("FAIL: Duplicate arrow coordinate (%d, %d) in %s" % [c, r, path])
-			return false
-		occupied_coords[coord] = true
-		
-		# Direction check
-		var dir_str: String = str(arrow.get("direction", ""))
-		if not GlobalConstants.STRING_TO_DIRECTION.has(dir_str):
-			push_error("FAIL: Invalid direction '%s' in %s" % [dir_str, path])
-			return false
+		if arrow.has("points"):
+			var pts: Array = arrow["points"]
+			if pts.size() < 2:
+				push_error("FAIL: Arrow %s has fewer than 2 points in %s" % [arrow_id, path])
+				return false
+				
+			for i in range(pts.size()):
+				var p = pts[i]
+				var c: int = int(p[0])
+				var r: int = int(p[1])
+				var coord = Vector2i(c, r)
+				
+				# Bounds check
+				if r < 0 or r >= rows or c < 0 or c >= cols:
+					push_error("FAIL: Point (%d,%d) out of bounds in %s" % [c, r, path])
+					return false
+					
+				# Overlap check
+				if occupied_coords.has(coord):
+					push_error("FAIL: Cell collision at (%d,%d) in %s" % [c, r, path])
+					return false
+				occupied_coords[coord] = arrow_id
+				
+				# Orthogonality check
+				if i > 0:
+					var prev_p = pts[i - 1]
+					var dist = absi(c - int(prev_p[0])) + absi(r - int(prev_p[1]))
+					if dist != 1:
+						push_error("FAIL: Non-orthogonal segment in arrow %s in %s" % [arrow_id, path])
+						return false
+		else:
+			# Legacy check
+			var r: int = int(arrow.get("row", 0))
+			var c: int = int(arrow.get("column", 0))
+			var coord = Vector2i(c, r)
+			if r < 0 or r >= rows or c < 0 or c >= cols:
+				return false
+			if occupied_coords.has(coord):
+				return false
+			occupied_coords[coord] = arrow_id
 			
 	# Solvability check
 	var solution: Array[String] = SolverEngine.solve_puzzle(grid_size, arrows)

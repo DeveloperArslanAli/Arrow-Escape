@@ -1,51 +1,42 @@
-# SOP-06: UI Design System, Themes & Screen Layouts
+# SOP-06: UI Design System (Arrows Puzzle Escape Match)
 ## Purpose & Scope
-Standardizes the visual aesthetics, design tokens, responsive layout rules, typography, and animation curves for Arrow Escape to ensure a cohesive, premium, and relaxing mobile experience.
+Standardizes the visual aesthetics to match *Arrows – Puzzle Escape*: curved sky-blue header, dual floating metric pills (Timer & Hearts), thick rounded polyline arrows, and bottom action buttons.
 
 ---
 
-## 1. DESIGN TOKENS & COLOR PALETTE
+## 1. COLOR PALETTE SPECIFICATION
 
-All colors are stored as `Color` constants in `ThemeManager` or custom Godot `.tres` themes:
-
-| Token Name | Hex Code | Visual Role |
+| Token | Hex Code | Visual Role |
 | :--- | :--- | :--- |
-| `COLOR_BG` | `#F7F5EF` | Primary app background (Soft cream) |
-| `COLOR_BOARD` | `#E9E8E2` | Board container background & inactive cells (Light gray) |
-| `COLOR_ARROW_PRIMARY` | `#5596E6` | Standard arrow body & head (Sleek calm blue) |
-| `COLOR_ARROW_SECONDARY`| `#F28B82` | Alternate arrow or multi-type variant (Soft coral) |
-| `COLOR_ACCENT` | `#F6D365` | Hint highlights, star ratings, CTA badges (Soft yellow) |
-| `COLOR_SUCCESS` | `#7BCFA6` | Win state banner, checkmarks, progress bars (Mint green) |
-| `COLOR_TEXT_DARK` | `#30343B` | Primary headings, move counters, body text (Dark slate) |
-| `COLOR_TEXT_MUTED` | `#8C9099` | Secondary captions, disabled level icons (Muted gray) |
+| `COLOR_BG` | `#EBF3FC` | Soft ice-blue clean puzzle backdrop |
+| `COLOR_HEADER_BG` | `#4D90EE` | Vibrant sky-blue curved top banner |
+| `COLOR_HEADER_DARK` | `#356BB3` | Progress pill bar on top header |
+| `COLOR_PILL_BG` | `#FFFFFF` | Floating timer and hearts background pill |
+| `COLOR_PILL_BORDER` | `#D5E4F5` | Subtle border around metric pills |
+| `COLOR_HEART` | `#E74C3C` | Vibrant red heart icons |
+| `COLOR_BUTTON_BLUE`| `#4D90EE` | Circular action buttons (Restart, Pause) |
 
 ---
 
-## 2. RESPONSIVE MOBILE SCALING & SAFE AREAS
+## 2. HUD COMPOSITION & LAYOUT
 
-1. **Godot Display Settings**:
-   - `display/window/size/viewport_width = 720`
-   - `display/window/size/viewport_height = 1280`
-   - `display/window/stretch/mode = "canvas_items"`
-   - `display/window/stretch/aspect = "expand"`
-   - `display/window/handheld/orientation = "portrait"`
-2. **Safe Area Insets**:
-   - Top notch & bottom home-bar padding managed by `DisplayServer.get_display_safe_area()`.
-   - All interactive HUD buttons (Pause, Restart, Hint) are anchored with a minimum safe top margin of 48px.
-3. **Board Centering**:
-   - Board container computes `cell_size` dynamically:
-     $$\text{cell\_size} = \min\left(\frac{W_{\text{available}}}{C}, \frac{H_{\text{available}}}{R}\right) \times 0.92$$
-   - This ensures puzzle fits comfortably on any screen from 16:9 phones to 4:3 tablets.
+1. **Top Curved Header**:
+   - Spans full width with bottom rounded corners (`corner_radius_bottom_left = 24`, `corner_radius_bottom_right = 24`).
+   - Left: Circular Restart button (blue background, white circular reload icon).
+   - Center: "Level X" in bold white typography with dark pill underneath.
+   - Right: Circular Pause button (blue background, white `||` icon).
+2. **Sub-Header Floating Pills**:
+   - Left: White rounded pill with stopwatch icon `⏱ 0s`.
+   - Right: White rounded pill with 3 heart icons `❤️❤️❤️`.
+3. **Bottom Tool Bar**:
+   - Left: Magnifying glass Hint button with small play icon `🔍 ▷`.
+   - Right: Grid/Tool button `#`.
 
 ---
 
-## 3. MICRO-INTERACTIONS & JUICE
+## 3. ARROW POLYLINE STYLING
 
-1. **Button Presses**:
-   - Press down: Scale down to `0.94` in 0.08s.
-   - Release: Bounce back to `1.0` in 0.12s (`Tween.TRANS_BACK`, `Tween.EASE_OUT`).
-   - Trigger soft click sound and 5ms light haptic.
-2. **Win Celebration**:
-   - Board smoothly fades/scales down slightly (`0.95`).
-   - Victory modal drops from top with elastic ease (`Tween.TRANS_SPRING`).
-   - Stars illuminate sequentially with a 0.15s stagger and rising pitch tone.
+- Line width: `12.0px` to `16.0px` depending on grid density.
+- Caps & Joints: Rounded (`LINE_CAP_ROUND`, `LINE_JOINT_ROUND`).
+- Head: Solid filled equilateral triangle pointing in head vector direction.
+- Vibrant pastel/flat distinct color per arrow.

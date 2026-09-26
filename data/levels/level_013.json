@@ -1,68 +1,122 @@
 {
   "level_id": 13,
-  "difficulty": "intermediate",
+  "difficulty": "easy",
   "grid_size": {
     "rows": 5,
     "columns": 5
   },
   "star_thresholds": {
-    "three_stars": 9,
-    "two_stars": 12
+    "three_stars": 6,
+    "two_stars": 8
   },
   "arrows": [
     {
       "id": "arr_1",
-      "column": 3,
-      "row": 3,
-      "direction": "up"
+      "color": "#2B7DE9",
+      "points": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ]
     },
     {
       "id": "arr_2",
-      "column": 0,
-      "row": 4,
-      "direction": "left"
+      "color": "#E04848",
+      "points": [
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          0
+        ]
+      ]
     },
     {
       "id": "arr_3",
-      "column": 0,
-      "row": 2,
-      "direction": "down"
+      "color": "#27AE60",
+      "points": [
+        [
+          2,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ]
+      ]
     },
     {
       "id": "arr_4",
-      "column": 3,
-      "row": 1,
-      "direction": "up"
+      "color": "#F39C12",
+      "points": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ]
+      ]
     },
     {
       "id": "arr_5",
-      "column": 2,
-      "row": 1,
-      "direction": "right"
+      "color": "#8E44AD",
+      "points": [
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ]
+      ]
     },
     {
       "id": "arr_6",
-      "column": 3,
-      "row": 0,
-      "direction": "up"
-    },
-    {
-      "id": "arr_7",
-      "column": 0,
-      "row": 3,
-      "direction": "right"
-    },
-    {
-      "id": "arr_8",
-      "column": 3,
-      "row": 4,
-      "direction": "up"
-    },
-    {
-      "id": "arr_9",
-      "column": 2,
-      "row": 4,
-      "direction": "up"
+      "color": "#F1C40F",
+      "points": [
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ]
     }
   ]
 }

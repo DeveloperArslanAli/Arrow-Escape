@@ -1,47 +1,36 @@
-# SOP-05: Game State Lifecycle & Turn Flow
+# SOP-05: Game State Lifecycle, Hearts (Lives) & Timer
 ## Purpose & Scope
-Details the finite state machine (FSM) governing game progression, scene transitions, turn counters, move history, pause/resume lifecycles, and win-condition triggering.
+Governs the game state machine, 3-hearts life tracking, live elapsed timer, fail/restart flows, and victory triggers.
 
 ---
 
-## 1. FINITE STATE MACHINE (FSM)
+## 1. EXTENDED STATE MACHINE
 
 ```mermaid
 stateDiagram-v2
     [*] --> BOOT
-    BOOT --> MAIN_MENU : Save Loaded & Assets Initialized
+    BOOT --> MAIN_MENU : Assets & Save Loaded
     MAIN_MENU --> LEVEL_SELECT : Tap 'Select Level'
-    MAIN_MENU --> PLAYING : Tap 'Continue' / 'Play'
-    LEVEL_SELECT --> PLAYING : Level Chosen
+    MAIN_MENU --> PLAYING : Tap 'Play'
+    LEVEL_SELECT --> PLAYING : Level Picked
     PLAYING --> PAUSED : Tap Pause
     PAUSED --> PLAYING : Tap Resume
-    PAUSED --> MAIN_MENU : Tap Exit
+    PLAYING --> LEVEL_FAILED : Hearts == 0
+    LEVEL_FAILED --> PLAYING : Tap Retry
     PLAYING --> LEVEL_COMPLETE : All Arrows Escaped
-    LEVEL_COMPLETE --> PLAYING : Tap Next Level / Replay
-    LEVEL_COMPLETE --> MAIN_MENU : Tap Menu
-    MAIN_MENU --> SETTINGS : Tap Settings
-    SETTINGS --> MAIN_MENU : Tap Close
+    LEVEL_COMPLETE --> PLAYING : Tap Next Level
 ```
 
 ---
 
-## 2. TURN FLOW & MOVE TRACKING
+## 2. HEARTS & TIMER INVARIANTS
 
-1. **Move Counter**:
-   - Initialized to `0` when level starts.
-   - Increments by `1` **only** upon a valid arrow escape move. Blocked taps do not increment the move count.
-2. **Win Condition Invariant**:
-   - Evaluated immediately after an arrow begins its exit animation:
-     `remaining_arrows_count -= 1`
-   - If `remaining_arrows_count == 0`:
-     - Transition state to `LEVEL_COMPLETE`.
-     - Disable all board touch inputs.
-     - Calculate stars earned (comparing moves with level threshold).
-     - Commit level completion to `SaveManager`.
-     - Emit signal `GameManager.level_completed(level_id, moves, stars)`.
-     - Trigger victory fanfare SFX & particle burst after 0.2s delay.
-3. **Restart Operation**:
-   - Clears active grid nodes.
-   - Re-instantiates board from cached level JSON.
-   - Resets move counter to `0`.
-   - Leaves unlocked progress intact.
+1. **Hearts (3 Lives)**:
+   - Initialized to `3` on `start_level()`.
+   - Decremented by `1` when player taps an arrow whose path is blocked.
+   - UI reflects `❤️❤️❤️`, `❤️❤️💔`, `❤️💔💔`, `💔💔💔`.
+   - On 0 hearts: input locks immediately, transition to `LEVEL_FAILED`.
+2. **Timer**:
+   - Live timer increments in `_process(delta)` during `PLAYING` state.
+   - Formatted as `⏱ Xs` (or `M:SS` if > 60s).
+   - Displayed in the left top pill widget matching the screenshot.

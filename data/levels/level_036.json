@@ -2,103 +2,217 @@
   "level_id": 36,
   "difficulty": "expert",
   "grid_size": {
-    "rows": 6,
-    "columns": 6
+    "rows": 7,
+    "columns": 7
   },
   "star_thresholds": {
-    "three_stars": 15,
-    "two_stars": 20
+    "three_stars": 12,
+    "two_stars": 14
   },
   "arrows": [
     {
       "id": "arr_1",
-      "column": 4,
-      "row": 4,
-      "direction": "right"
+      "color": "#2B7DE9",
+      "points": [
+        [
+          3,
+          1
+        ],
+        [
+          2,
+          1
+        ]
+      ]
     },
     {
       "id": "arr_2",
-      "column": 2,
-      "row": 1,
-      "direction": "down"
+      "color": "#E04848",
+      "points": [
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          1
+        ]
+      ]
     },
     {
       "id": "arr_3",
-      "column": 3,
-      "row": 1,
-      "direction": "down"
+      "color": "#27AE60",
+      "points": [
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ]
+      ]
     },
     {
       "id": "arr_4",
-      "column": 3,
-      "row": 3,
-      "direction": "right"
+      "color": "#F39C12",
+      "points": [
+        [
+          2,
+          5
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          4
+        ]
+      ]
     },
     {
       "id": "arr_5",
-      "column": 2,
-      "row": 2,
-      "direction": "left"
+      "color": "#8E44AD",
+      "points": [
+        [
+          5,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          6,
+          4
+        ]
+      ]
     },
     {
       "id": "arr_6",
-      "column": 1,
-      "row": 3,
-      "direction": "down"
+      "color": "#F1C40F",
+      "points": [
+        [
+          6,
+          6
+        ],
+        [
+          5,
+          6
+        ]
+      ]
     },
     {
       "id": "arr_7",
-      "column": 4,
-      "row": 3,
-      "direction": "right"
+      "color": "#E84393",
+      "points": [
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ]
     },
     {
       "id": "arr_8",
-      "column": 4,
-      "row": 5,
-      "direction": "down"
+      "color": "#2C3E50",
+      "points": [
+        [
+          4,
+          6
+        ],
+        [
+          3,
+          6
+        ]
+      ]
     },
     {
       "id": "arr_9",
-      "column": 5,
-      "row": 3,
-      "direction": "down"
+      "color": "#00CEC9",
+      "points": [
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ]
+      ]
     },
     {
       "id": "arr_10",
-      "column": 3,
-      "row": 2,
-      "direction": "right"
+      "color": "#2B7DE9",
+      "points": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          3
+        ]
+      ]
     },
     {
       "id": "arr_11",
-      "column": 0,
-      "row": 0,
-      "direction": "left"
+      "color": "#E04848",
+      "points": [
+        [
+          6,
+          1
+        ],
+        [
+          6,
+          0
+        ]
+      ]
     },
     {
       "id": "arr_12",
-      "column": 1,
-      "row": 2,
-      "direction": "up"
-    },
-    {
-      "id": "arr_13",
-      "column": 0,
-      "row": 2,
-      "direction": "down"
-    },
-    {
-      "id": "arr_14",
-      "column": 5,
-      "row": 2,
-      "direction": "right"
-    },
-    {
-      "id": "arr_15",
-      "column": 1,
-      "row": 5,
-      "direction": "left"
+      "color": "#27AE60",
+      "points": [
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          6,
+          2
+        ]
+      ]
     }
   ]
 }

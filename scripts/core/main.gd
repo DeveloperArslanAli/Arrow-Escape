@@ -8,6 +8,7 @@ const GlobalConstants = preload("res://scripts/core/global_constants.gd")
 @onready var main_menu: Control = $UILayer/MainMenu
 @onready var level_select: Control = $UILayer/LevelSelect
 @onready var level_complete_modal: Control = $UILayer/LevelCompleteModal
+@onready var level_failed_modal: Control = $UILayer/LevelFailedModal
 @onready var settings_modal: Control = $UILayer/SettingsModal
 
 func _ready() -> void:
@@ -28,8 +29,10 @@ func _apply_safe_area() -> void:
 		var top_inset = safe_area.position.y
 		if top_inset > 0:
 			var top_bar = game_hud.get_node_or_null("TopBar")
-			if top_bar is MarginContainer:
-				top_bar.add_theme_constant_override("margin_top", top_inset + 16)
+			if top_bar is PanelContainer:
+				var margin = top_bar.get_node_or_null("Margin")
+				if margin is MarginContainer:
+					margin.add_theme_constant_override("margin_top", top_inset + 24)
 
 func _on_state_changed(new_state: GlobalConstants.GameState) -> void:
 	match new_state:
@@ -39,24 +42,35 @@ func _on_state_changed(new_state: GlobalConstants.GameState) -> void:
 			game_board.hide()
 			game_hud.hide()
 			level_complete_modal.hide()
+			level_failed_modal.hide()
 		GlobalConstants.GameState.LEVEL_SELECT:
 			main_menu.hide()
 			level_select.show()
 			game_board.hide()
 			game_hud.hide()
 			level_complete_modal.hide()
+			level_failed_modal.hide()
 		GlobalConstants.GameState.PLAYING:
 			main_menu.hide()
 			level_select.hide()
 			game_board.show()
 			game_hud.show()
 			level_complete_modal.hide()
+			level_failed_modal.hide()
 		GlobalConstants.GameState.LEVEL_COMPLETE:
 			main_menu.hide()
 			level_select.hide()
 			game_board.show()
 			game_hud.show()
 			level_complete_modal.show()
+			level_failed_modal.hide()
+		GlobalConstants.GameState.LEVEL_FAILED:
+			main_menu.hide()
+			level_select.hide()
+			game_board.show()
+			game_hud.show()
+			level_complete_modal.hide()
+			level_failed_modal.show()
 
 func _on_hint_requested() -> void:
 	if game_board.has_method("trigger_hint"):

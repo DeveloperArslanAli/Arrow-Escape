@@ -2,109 +2,217 @@
   "level_id": 39,
   "difficulty": "expert",
   "grid_size": {
-    "rows": 6,
-    "columns": 6
+    "rows": 7,
+    "columns": 7
   },
   "star_thresholds": {
-    "three_stars": 16,
-    "two_stars": 21
+    "three_stars": 12,
+    "two_stars": 14
   },
   "arrows": [
     {
       "id": "arr_1",
-      "column": 2,
-      "row": 3,
-      "direction": "down"
+      "color": "#2B7DE9",
+      "points": [
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ]
+      ]
     },
     {
       "id": "arr_2",
-      "column": 2,
-      "row": 4,
-      "direction": "right"
+      "color": "#E04848",
+      "points": [
+        [
+          5,
+          4
+        ],
+        [
+          5,
+          3
+        ]
+      ]
     },
     {
       "id": "arr_3",
-      "column": 5,
-      "row": 2,
-      "direction": "up"
+      "color": "#27AE60",
+      "points": [
+        [
+          4,
+          6
+        ],
+        [
+          4,
+          5
+        ]
+      ]
     },
     {
       "id": "arr_4",
-      "column": 2,
-      "row": 1,
-      "direction": "up"
+      "color": "#F39C12",
+      "points": [
+        [
+          3,
+          2
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          0
+        ]
+      ]
     },
     {
       "id": "arr_5",
-      "column": 1,
-      "row": 1,
-      "direction": "down"
+      "color": "#8E44AD",
+      "points": [
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ]
+      ]
     },
     {
       "id": "arr_6",
-      "column": 5,
-      "row": 1,
-      "direction": "right"
+      "color": "#F1C40F",
+      "points": [
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ]
+      ]
     },
     {
       "id": "arr_7",
-      "column": 1,
-      "row": 0,
-      "direction": "left"
+      "color": "#E84393",
+      "points": [
+        [
+          1,
+          4
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          0,
+          5
+        ]
+      ]
     },
     {
       "id": "arr_8",
-      "column": 4,
-      "row": 4,
-      "direction": "right"
+      "color": "#2C3E50",
+      "points": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          2
+        ]
+      ]
     },
     {
       "id": "arr_9",
-      "column": 3,
-      "row": 4,
-      "direction": "up"
+      "color": "#00CEC9",
+      "points": [
+        [
+          6,
+          2
+        ],
+        [
+          6,
+          1
+        ]
+      ]
     },
     {
       "id": "arr_10",
-      "column": 0,
-      "row": 3,
-      "direction": "left"
+      "color": "#2B7DE9",
+      "points": [
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          5
+        ]
+      ]
     },
     {
       "id": "arr_11",
-      "column": 5,
-      "row": 0,
-      "direction": "up"
+      "color": "#E04848",
+      "points": [
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          1,
+          6
+        ]
+      ]
     },
     {
       "id": "arr_12",
-      "column": 3,
-      "row": 2,
-      "direction": "up"
-    },
-    {
-      "id": "arr_13",
-      "column": 5,
-      "row": 3,
-      "direction": "down"
-    },
-    {
-      "id": "arr_14",
-      "column": 1,
-      "row": 4,
-      "direction": "down"
-    },
-    {
-      "id": "arr_15",
-      "column": 0,
-      "row": 4,
-      "direction": "down"
-    },
-    {
-      "id": "arr_16",
-      "column": 0,
-      "row": 2,
-      "direction": "up"
+      "color": "#27AE60",
+      "points": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
     }
   ]
 }

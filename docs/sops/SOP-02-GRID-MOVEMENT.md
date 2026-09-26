@@ -1,75 +1,67 @@
-# SOP-02: Grid Representation, Path Raycasting & Arrow Movement
+# SOP-02: Winding Polyline Arrow Movement, Raycasting & Slither Animation
 ## Purpose & Scope
-Governs the core mechanics of the puzzle: grid layout calculations, touch selection, deterministic path raycasting, escape animations, blocked feedback, and input debounce synchronization.
+Governs the core mechanics of winding/bent multi-segment arrows (as in *Arrows – Puzzle Escape*), multi-cell raycasting, slither escape animations, collision recoil, and heart deductions.
 
 ---
 
-## 1. MATHEMATICAL FORMULATION OF THE BOARD
+## 1. DATA STRUCTURE OF A WINDING ARROW
 
-1. **Grid Space**:
-   A board has dimensions $R \times C$ where rows $r \in [0, R-1]$ and columns $c \in [0, C-1]$.
-   Origin `(0, 0)` is the **top-left** cell.
-
-2. **Occupancy Grid**:
-   Represented by a 2D Dictionary or Array:
-   `grid_occupancy[Vector2i(c, r)] = ArrowController` or `null`.
-
-3. **Direction Vectors**:
-   - `UP` $\rightarrow \vec{d} = (0, -1)$
-   - `DOWN` $\rightarrow \vec{d} = (0, 1)$
-   - `LEFT` $\rightarrow \vec{d} = (-1, 0)$
-   - `RIGHT` $\rightarrow \vec{d} = (1, 0)$
+An arrow is defined by an ordered list of integer grid coordinates:
+```json
+{
+  "id": "arrow_1",
+  "color": "#27AE60",
+  "points": [
+    [2, 3],
+    [2, 2],
+    [3, 2],
+    [3, 1]
+  ]
+}
+```
+- `points[0]` is the **tail**.
+- `points[-1]` is the **head**.
+- Head direction vector: $\mathbf{d} = \text{points}[-1] - \text{points}[-2]$.
 
 ---
 
-## 2. DETERMINISTIC PATH RAYCASTING ALGORITHM
+## 2. RAYCAST COLLISION ENGINE
 
-An arrow at $(c_0, r_0)$ pointing in direction $\vec{d} = (dc, dr)$ can escape **if and only if** every subsequent cell along its ray is empty until it crosses the boundary of the board:
+A winding arrow can escape if and only if a discrete ray cast from its arrowhead along $\mathbf{d}$ reaches the edge of the grid without intersecting any cell occupied by any active arrow:
 
 ```gdscript
-func can_arrow_escape(start_pos: Vector2i, direction: GlobalConstants.Direction, occupancy: Dictionary, grid_size: Vector2i) -> bool:
-    var dir_vec: Vector2i = GlobalConstants.DIRECTION_VECTORS[direction]
-    var current: Vector2i = start_pos + dir_vec
+static func can_arrow_escape(arrow_data: Dictionary, occupancy_map: Dictionary, grid_size: Vector2i) -> bool:
+    var points: Array = arrow_data["points"]
+    if points.size() < 2:
+        return false
+    var head: Vector2i = points[-1]
+    var prev: Vector2i = points[-2]
+    var dir: Vector2i = head - prev
     
-    while current.x >= 0 and current.x < grid_size.x and current.y >= 0 and current.y < grid_size.y:
-        if occupancy.has(current) and occupancy[current] != null:
-            return false # Path blocked by another arrow
-        current += dir_vec
-        
-    return true # Path is unobstructed to the edge of the board
+    var ray_pos: Vector2i = head + dir
+    while ray_pos.x >= 0 and ray_pos.x < grid_size.x and ray_pos.y >= 0 and ray_pos.y < grid_size.y:
+        if occupancy_map.has(ray_pos) and occupancy_map[ray_pos] != null:
+            return false # Intersects another arrow segment!
+        ray_pos += dir
+    return true
 ```
 
 ---
 
-## 3. INPUT GATEKEEPER & RACE PREVENTION
+## 3. COLLISION PENALTY (3 HEARTS)
 
-To prevent rapid-tap glitches and state corruption:
-1. `GridManager.is_animating: bool = false`.
-2. When the player taps any arrow:
-   ```gdscript
-   func handle_arrow_tapped(arrow: ArrowController) -> void:
-       if is_input_locked or is_animating:
-           return # Ignore tap during active tween
-       
-       if PathValidator.can_arrow_escape(arrow.grid_coord, arrow.direction, grid_occupancy, grid_size):
-           execute_escape(arrow)
-       else:
-           execute_blocked_feedback(arrow)
-   ```
-3. **Atomic Occupancy Clearing**:
-   The cell `grid_occupancy[arrow.grid_coord]` is cleared to `null` **immediately** at the start of the escape tween, so arrows behind it can subsequently be evaluated without waiting for the animation to completely vanish from the scene tree.
+- When an invalid tap occurs:
+  1. The tapped arrow recoils with a sharp jiggle (6px forward, spring back in 0.15s).
+  2. `AudioManager.play_blocked()` triggers a warning thud + haptic buzz.
+  3. `GameManager.deduct_heart()` decrements hearts: `3 -> 2 -> 1 -> 0`.
+  4. At 0 hearts, game triggers `LEVEL_FAILED` modal.
 
 ---
 
-## 4. ANIMATION SPECIFICATIONS
+## 4. SLITHER ESCAPE ANIMATION
 
-- **Escape Movement**:
-  - Distance: Moves along $\vec{d}$ beyond the board viewport boundary (offset: ~600px).
-  - Duration: 0.28 seconds.
-  - Transition: `Tween.TRANS_CUBIC`, Ease: `Tween.EASE_IN`.
-  - SFX: `sfx_escape.play()` (pitch scaled slightly based on combo streak).
-- **Blocked Movement**:
-  - Subtle forward nudge (8px) followed by an elastic bounce back to rest.
-  - Duration: 0.16 seconds.
-  - SFX: `sfx_blocked.play()` (soft low-frequency thump).
-  - Haptic: Gentle micro-vibration (5ms).
+- When path is clear:
+  1. Occupancy of all cells in `points` is cleared immediately from `occupancy_map`.
+  2. The arrow polyline slithers forward along its head direction out of the screen using a smooth Tween (`0.32s`).
+  3. Tail collapses forward into head path until completely off-board.
+  4. `AudioManager.play_escape()` triggers ascending combo chime.

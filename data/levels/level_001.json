@@ -2,31 +2,59 @@
   "level_id": 1,
   "difficulty": "tutorial",
   "grid_size": {
-    "rows": 3,
-    "columns": 3
+    "rows": 4,
+    "columns": 4
   },
   "star_thresholds": {
     "three_stars": 3,
-    "two_stars": 4
+    "two_stars": 5
   },
   "arrows": [
     {
       "id": "arr_1",
-      "row": 0,
-      "column": 1,
-      "direction": "up"
+      "color": "#2B7DE9",
+      "points": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
     },
     {
       "id": "arr_2",
-      "row": 1,
-      "column": 1,
-      "direction": "up"
+      "color": "#E04848",
+      "points": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ]
     },
     {
       "id": "arr_3",
-      "row": 2,
-      "column": 1,
-      "direction": "up"
+      "color": "#27AE60",
+      "points": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ]
+      ]
     }
   ]
 }

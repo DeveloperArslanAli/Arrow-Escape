@@ -2,49 +2,107 @@
   "level_id": 7,
   "difficulty": "easy",
   "grid_size": {
-    "rows": 4,
-    "columns": 4
+    "rows": 5,
+    "columns": 5
   },
   "star_thresholds": {
-    "three_stars": 6,
-    "two_stars": 8
+    "three_stars": 5,
+    "two_stars": 7
   },
   "arrows": [
     {
       "id": "arr_1",
-      "column": 1,
-      "row": 3,
-      "direction": "right"
+      "color": "#2B7DE9",
+      "points": [
+        [
+          3,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ]
+      ]
     },
     {
       "id": "arr_2",
-      "column": 0,
-      "row": 3,
-      "direction": "right"
+      "color": "#E04848",
+      "points": [
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ]
+      ]
     },
     {
       "id": "arr_3",
-      "column": 1,
-      "row": 2,
-      "direction": "right"
+      "color": "#27AE60",
+      "points": [
+        [
+          1,
+          4
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          0,
+          3
+        ]
+      ]
     },
     {
       "id": "arr_4",
-      "column": 3,
-      "row": 3,
-      "direction": "down"
+      "color": "#F39C12",
+      "points": [
+        [
+          4,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ]
     },
     {
       "id": "arr_5",
-      "column": 2,
-      "row": 2,
-      "direction": "right"
-    },
-    {
-      "id": "arr_6",
-      "column": 1,
-      "row": 1,
-      "direction": "down"
+      "color": "#8E44AD",
+      "points": [
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ]
+      ]
     }
   ]
 }
