@@ -1,0 +1,128 @@
+{
+  "level_id": 50,
+  "difficulty": "expert",
+  "grid_size": {
+    "rows": 6,
+    "columns": 6
+  },
+  "star_thresholds": {
+    "three_stars": 19,
+    "two_stars": 25
+  },
+  "arrows": [
+    {
+      "id": "arr_1",
+      "column": 3,
+      "row": 4,
+      "direction": "left"
+    },
+    {
+      "id": "arr_2",
+      "column": 5,
+      "row": 4,
+      "direction": "down"
+    },
+    {
+      "id": "arr_3",
+      "column": 0,
+      "row": 5,
+      "direction": "up"
+    },
+    {
+      "id": "arr_4",
+      "column": 4,
+      "row": 2,
+      "direction": "up"
+    },
+    {
+      "id": "arr_5",
+      "column": 4,
+      "row": 3,
+      "direction": "left"
+    },
+    {
+      "id": "arr_6",
+      "column": 5,
+      "row": 2,
+      "direction": "up"
+    },
+    {
+      "id": "arr_7",
+      "column": 0,
+      "row": 2,
+      "direction": "left"
+    },
+    {
+      "id": "arr_8",
+      "column": 2,
+      "row": 5,
+      "direction": "up"
+    },
+    {
+      "id": "arr_9",
+      "column": 3,
+      "row": 1,
+      "direction": "left"
+    },
+    {
+      "id": "arr_10",
+      "column": 0,
+      "row": 3,
+      "direction": "left"
+    },
+    {
+      "id": "arr_11",
+      "column": 1,
+      "row": 4,
+      "direction": "down"
+    },
+    {
+      "id": "arr_12",
+      "column": 1,
+      "row": 0,
+      "direction": "left"
+    },
+    {
+      "id": "arr_13",
+      "column": 4,
+      "row": 4,
+      "direction": "down"
+    },
+    {
+      "id": "arr_14",
+      "column": 5,
+      "row": 5,
+      "direction": "right"
+    },
+    {
+      "id": "arr_15",
+      "column": 1,
+      "row": 1,
+      "direction": "left"
+    },
+    {
+      "id": "arr_16",
+      "column": 2,
+      "row": 2,
+      "direction": "up"
+    },
+    {
+      "id": "arr_17",
+      "column": 2,
+      "row": 1,
+      "direction": "up"
+    },
+    {
+      "id": "arr_18",
+      "column": 5,
+      "row": 3,
+      "direction": "right"
+    },
+    {
+      "id": "arr_19",
+      "column": 0,
+      "row": 0,
+      "direction": "up"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "level_id": 22,
+  "difficulty": "advanced",
+  "grid_size": {
+    "rows": 5,
+    "columns": 5
+  },
+  "star_thresholds": {
+    "three_stars": 11,
+    "two_stars": 14
+  },
+  "arrows": [
+    {
+      "id": "arr_1",
+      "column": 0,
+      "row": 0,
+      "direction": "up"
+    },
+    {
+      "id": "arr_2",
+      "column": 0,
+      "row": 1,
+      "direction": "down"
+    },
+    {
+      "id": "arr_3",
+      "column": 3,
+      "row": 2,
+      "direction": "right"
+    },
+    {
+      "id": "arr_4",
+      "column": 2,
+      "row": 1,
+      "direction": "down"
+    },
+    {
+      "id": "arr_5",
+      "column": 2,
+      "row": 2,
+      "direction": "down"
+    },
+    {
+      "id": "arr_6",
+      "column": 3,
+      "row": 4,
+      "direction": "right"
+    },
+    {
+      "id": "arr_7",
+      "column": 1,
+      "row": 1,
+      "direction": "up"
+    },
+    {
+      "id": "arr_8",
+      "column": 2,
+      "row": 3,
+      "direction": "right"
+    },
+    {
+      "id": "arr_9",
+      "column": 1,
+      "row": 3,
+      "direction": "down"
+    },
+    {
+      "id": "arr_10",
+      "column": 2,
+      "row": 0,
+      "direction": "right"
+    },
+    {
+      "id": "arr_11",
+      "column": 1,
+      "row": 2,
+      "direction": "left"
+    }
+  ]
+}

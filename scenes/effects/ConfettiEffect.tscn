@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/effects/confetti_effect.gd" id="1_conf"]
+
+[node name="ConfettiEffect" type="CPUParticles2D"]
+emitting = false
+amount = 80
+one_shot = true
+explosiveness = 0.85
+lifetime = 2.2
+script = ExtResource("1_conf")

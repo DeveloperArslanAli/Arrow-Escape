@@ -3,6 +3,7 @@ extends Node
 const GlobalConstants = preload("res://scripts/core/global_constants.gd")
 
 @onready var game_board: Node2D = $GameBoard
+@onready var ui_layer: CanvasLayer = $UILayer
 @onready var game_hud: Control = $UILayer/GameHUD
 @onready var main_menu: Control = $UILayer/MainMenu
 @onready var level_select: Control = $UILayer/LevelSelect
@@ -13,7 +14,22 @@ func _ready() -> void:
 	GameManager.state_changed.connect(_on_state_changed)
 	game_hud.hint_requested.connect(_on_hint_requested)
 	main_menu.open_settings_requested.connect(func(): settings_modal.show())
+	
+	_apply_safe_area()
+	get_viewport().size_changed.connect(_apply_safe_area)
+	
 	_on_state_changed(GameManager.current_state)
+
+func _apply_safe_area() -> void:
+	var safe_area: Rect2i = DisplayServer.get_display_safe_area()
+	var window_size: Vector2i = DisplayServer.window_get_size()
+	
+	if window_size.y > 0 and safe_area.size.y > 0:
+		var top_inset = safe_area.position.y
+		if top_inset > 0:
+			var top_bar = game_hud.get_node_or_null("TopBar")
+			if top_bar is MarginContainer:
+				top_bar.add_theme_constant_override("margin_top", top_inset + 16)
 
 func _on_state_changed(new_state: GlobalConstants.GameState) -> void:
 	match new_state:

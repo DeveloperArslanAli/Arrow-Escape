@@ -1,10 +1,14 @@
 extends Control
 
+const GlobalConstants = preload("res://scripts/core/global_constants.gd")
+
 @onready var stars_label: Label = %StarsLabel
 @onready var stats_label: Label = %StatsLabel
 @onready var next_button: Button = %NextButton
 @onready var replay_button: Button = %ReplayButton
 @onready var menu_button: Button = %MenuButton
+@onready var panel_container: PanelContainer = $Center/Panel
+@onready var confetti: CPUParticles2D = $ConfettiEffect
 
 func _ready() -> void:
 	next_button.pressed.connect(_on_next_pressed)
@@ -22,7 +26,21 @@ func _on_level_completed(_level_id: int, moves: int, stars: int) -> void:
 		stars_text += "☆ "
 	stars_label.text = stars_text.strip_edges()
 	stats_label.text = "Cleared in %d moves!" % moves
+	
 	show()
+	
+	# Juicing: Spring scale animation for victory card
+	panel_container.scale = Vector2(0.6, 0.6)
+	panel_container.pivot_offset = panel_container.size * 0.5
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_BACK)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(panel_container, "scale", Vector2(1.0, 1.0), 0.35)
+	
+	# Juicing: Confetti burst
+	if confetti:
+		confetti.restart()
+		confetti.emitting = true
 
 func _on_next_pressed() -> void:
 	AudioManager.play_tap()
