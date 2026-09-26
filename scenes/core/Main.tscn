@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/main.gd" id="1_main"]
 [ext_resource type="PackedScene" path="res://scenes/core/GameBoard.tscn" id="2_board"]
@@ -7,7 +7,8 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/GameHUD.tscn" id="5_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/LevelCompleteModal.tscn" id="6_complete"]
 [ext_resource type="PackedScene" path="res://scenes/ui/LevelFailedModal.tscn" id="7_fail"]
-[ext_resource type="PackedScene" path="res://scenes/ui/SettingsModal.tscn" id="8_settings"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseModal.tscn" id="8_pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/SettingsModal.tscn" id="9_settings"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_main")
@@ -32,11 +33,14 @@ visible = false
 [node name="GameHUD" parent="UILayer" instance=ExtResource("5_hud")]
 visible = false
 
+[node name="PauseModal" parent="UILayer" instance=ExtResource("8_pause")]
+visible = false
+
 [node name="LevelCompleteModal" parent="UILayer" instance=ExtResource("6_complete")]
 visible = false
 
 [node name="LevelFailedModal" parent="UILayer" instance=ExtResource("7_fail")]
 visible = false
 
-[node name="SettingsModal" parent="UILayer" instance=ExtResource("8_settings")]
+[node name="SettingsModal" parent="UILayer" instance=ExtResource("9_settings")]
 visible = false

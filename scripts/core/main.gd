@@ -9,12 +9,14 @@ const GlobalConstants = preload("res://scripts/core/global_constants.gd")
 @onready var level_select: Control = $UILayer/LevelSelect
 @onready var level_complete_modal: Control = $UILayer/LevelCompleteModal
 @onready var level_failed_modal: Control = $UILayer/LevelFailedModal
+@onready var pause_modal: Control = $UILayer/PauseModal
 @onready var settings_modal: Control = $UILayer/SettingsModal
 
 func _ready() -> void:
 	GameManager.state_changed.connect(_on_state_changed)
 	game_hud.hint_requested.connect(_on_hint_requested)
 	main_menu.open_settings_requested.connect(func(): settings_modal.show())
+	pause_modal.open_settings_requested.connect(func(): settings_modal.show())
 	
 	_apply_safe_area()
 	get_viewport().size_changed.connect(_apply_safe_area)
@@ -41,6 +43,7 @@ func _on_state_changed(new_state: GlobalConstants.GameState) -> void:
 			level_select.hide()
 			game_board.hide()
 			game_hud.hide()
+			pause_modal.hide()
 			level_complete_modal.hide()
 			level_failed_modal.hide()
 		GlobalConstants.GameState.LEVEL_SELECT:
@@ -48,6 +51,7 @@ func _on_state_changed(new_state: GlobalConstants.GameState) -> void:
 			level_select.show()
 			game_board.hide()
 			game_hud.hide()
+			pause_modal.hide()
 			level_complete_modal.hide()
 			level_failed_modal.hide()
 		GlobalConstants.GameState.PLAYING:
@@ -55,6 +59,15 @@ func _on_state_changed(new_state: GlobalConstants.GameState) -> void:
 			level_select.hide()
 			game_board.show()
 			game_hud.show()
+			pause_modal.hide()
+			level_complete_modal.hide()
+			level_failed_modal.hide()
+		GlobalConstants.GameState.PAUSED:
+			main_menu.hide()
+			level_select.hide()
+			game_board.show()
+			game_hud.show()
+			pause_modal.show()
 			level_complete_modal.hide()
 			level_failed_modal.hide()
 		GlobalConstants.GameState.LEVEL_COMPLETE:
@@ -62,6 +75,7 @@ func _on_state_changed(new_state: GlobalConstants.GameState) -> void:
 			level_select.hide()
 			game_board.show()
 			game_hud.show()
+			pause_modal.hide()
 			level_complete_modal.show()
 			level_failed_modal.hide()
 		GlobalConstants.GameState.LEVEL_FAILED:
@@ -69,6 +83,7 @@ func _on_state_changed(new_state: GlobalConstants.GameState) -> void:
 			level_select.hide()
 			game_board.show()
 			game_hud.show()
+			pause_modal.hide()
 			level_complete_modal.hide()
 			level_failed_modal.show()
 
