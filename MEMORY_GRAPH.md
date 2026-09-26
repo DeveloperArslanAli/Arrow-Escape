@@ -46,12 +46,12 @@
 ## 3. THE 8 THEMATIC WORLDS & CHAPTER PALETTES
 
 ```text
-• World 1: Sky Breeze        (Lvls 1–25)   | Ice-Blue (#EBF3FC)  | Classic Sky-Blue (#3A80E0)
-• World 2: Sunset Coral      (Lvls 26–50)  | Soft Peach (#FDF2EE)| Coral Sunset (#E65C40)
-• World 3: Emerald Glade     (Lvls 51–75)  | Mint Mist (#EEF9F5) | Lush Jade (#10AC84)
-• World 4: Amethyst Twilight (Lvls 76–100) | Lilac (#F6F3FF)     | Deep Amethyst (#6C5CE7)
-• World 5: Oceanic Abyss     (Lvls 101–125)| Arctic Ice (#EAF6FF)| Sapphire Blue (#0984E3)
-• World 6: Golden Dunes      (Lvls 126–150)| Sandstone (#FDFBF2) | Desert Gold (#D48806)
-• World 7: Cherry Blossom    (Lvls 151–175)| Sakura (#FFF0F3)    | Sakura Ruby (#D63031)
-• World 8: Midnight Obsidian (Lvls 176–200)| Obsidian (#181E24)  | Neon Metallic Slate (#2C3E50)
+• World 1: Sky Breeze        (Lvls 1–25)   | 4x4 -> 6x6   | Ice-Blue (#EBF3FC)  | Classic Sky-Blue (#3A80E0)
+• World 2: Sunset Coral      (Lvls 26–50)  | 6x6 -> 8x8   | Soft Peach (#FDF2EE)| Coral Sunset (#E65C40)
+• World 3: Emerald Glade     (Lvls 51–75)  | 8x8 -> 10x10 | Mint Mist (#EEF9F5) | Lush Jade (#10AC84)
+• World 4: Amethyst Twilight (Lvls 76–100) | 10x10->12x12 | Lilac (#F6F3FF)     | Deep Amethyst (#6C5CE7)
+• World 5: Oceanic Abyss     (Lvls 101–125)| 12x12->14x14 | Arctic Ice (#EAF6FF)| Sapphire Blue (#0984E3)
+• World 6: Golden Dunes      (Lvls 126–150)| 14x14->16x16 | Sandstone (#FDFBF2) | Desert Gold (#D48806)
+• World 7: Cherry Blossom    (Lvls 151–175)| 16x16->18x18 | Sakura (#FFF0F3)    | Sakura Ruby (#D63031)
+• World 8: Midnight Obsidian (Lvls 176–200)| 18x18->20x20 | Obsidian (#181E24)  | Neon Metallic Slate (#2C3E50)
 ```
