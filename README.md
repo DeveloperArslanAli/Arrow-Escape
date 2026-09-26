@@ -57,14 +57,14 @@ The 200 levels are categorized across 8 distinct thematic worlds, transitioning 
 
 | Chapter | World Name | Levels | Visual Theme & Mood | Grid Dimensions |
 |:---:|:---|:---:|:---|:---:|
-| **1** | **Sky Breeze** | 1 – 25 | Soft Ice-Blue (`#EBF3FC`) & Azure Blue | 4x4 $\to$ 7x7 |
-| **2** | **Sunset Coral** | 26 – 50 | Warm Peach (`#FDF2EE`) & Coral Sunset | 7x7 $\to$ 8x8 |
-| **3** | **Emerald Glade** | 51 – 75 | Mint Mist (`#EEF9F5`) & Lush Jade | 8x8 |
-| **4** | **Amethyst Twilight** | 76 – 100 | Soft Lilac (`#F6F3FF`) & Royal Amethyst | 8x8 |
-| **5** | **Oceanic Abyss** | 101 – 125 | Crisp Arctic Water (`#EAF6FF`) & Deep Marine | 8x8 |
-| **6** | **Golden Dunes** | 126 – 150 | Sandstone Ivory (`#FDFBF2`) & Desert Gold | 8x8 |
-| **7** | **Cherry Blossom** | 151 – 175 | Sakura Petal (`#FFF0F3`) & Crimson Ruby | 8x8 |
-| **8** | **Midnight Obsidian** | 176 – 200 | Obsidian Dark Slate (`#181E24`) & Neon Accents | 8x8 |
+| **1** | **Sky Breeze** | 1 – 25 | Soft Ice-Blue (`#EBF3FC`) & Azure Blue | $4\times 4 \to 6\times 6$ |
+| **2** | **Sunset Coral** | 26 – 50 | Warm Peach (`#FDF2EE`) & Coral Sunset | $6\times 6 \to 8\times 8$ |
+| **3** | **Emerald Glade** | 51 – 75 | Mint Mist (`#EEF9F5`) & Lush Jade | $8\times 8 \to 10\times 10$ |
+| **4** | **Amethyst Twilight** | 76 – 100 | Soft Lilac (`#F6F3FF`) & Royal Amethyst | $10\times 10 \to 12\times 12$ |
+| **5** | **Oceanic Abyss** | 101 – 125 | Crisp Arctic Water (`#EAF6FF`) & Deep Marine | $12\times 12 \to 14\times 14$ |
+| **6** | **Golden Dunes** | 126 – 150 | Sandstone Ivory (`#FDFBF2`) & Desert Gold | $14\times 14 \to 16\times 16$ |
+| **7** | **Cherry Blossom** | 151 – 175 | Sakura Petal (`#FFF0F3`) & Crimson Ruby | $16\times 16 \to 18\times 18$ |
+| **8** | **Midnight Obsidian** | 176 – 200 | Obsidian Dark Slate (`#181E24`) & Neon Accents | $18\times 18 \to 20\times 20$ |
 
 ---
 

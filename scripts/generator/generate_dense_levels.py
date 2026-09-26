@@ -1,6 +1,7 @@
 import json
 import os
 import random
+import time
 
 LEVELS_DIR = r"e:\Projects\mobile application\Arrow Puzzle Game\data\levels"
 
@@ -32,11 +33,13 @@ DIFF_NAMES = [
 ]
 
 def is_ray_free(head, dir_vec, occ, cols, rows):
-    curr = (head[0] + dir_vec[0], head[1] + dir_vec[1])
-    while 0 <= curr[0] < cols and 0 <= curr[1] < rows:
-        if curr in occ:
+    cx = head[0] + dir_vec[0]
+    cy = head[1] + dir_vec[1]
+    while 0 <= cx < cols and 0 <= cy < rows:
+        if (cx, cy) in occ:
             return False
-        curr = (curr[0] + dir_vec[0], curr[1] + dir_vec[1])
+        cx += dir_vec[0]
+        cy += dir_vec[1]
     return True
 
 def generate_dense_level(level_id, cols, rows, min_arrows, max_arrows, target_fill, max_len_profile, diff, palette):
@@ -44,22 +47,30 @@ def generate_dense_level(level_id, cols, rows, min_arrows, max_arrows, target_fi
     best_level = None
     best_fill = 0.0
     
-    for attempt in range(150):
+    # Adaptive attempts based on board scale for optimal runtime
+    if cols <= 6:
+        max_attempts = 50
+    elif cols <= 10:
+        max_attempts = 25
+    elif cols <= 14:
+        max_attempts = 15
+    else:
+        max_attempts = 8
+    
+    for attempt in range(max_attempts):
         occ = {}
         arrows_reverse = []
+        empty_cells = set((c, r) for c in range(cols) for r in range(rows))
         
         while len(arrows_reverse) < max_arrows and (len(occ) / total_cells) < target_fill:
             candidates = []
-            for r in range(rows):
-                for c in range(cols):
-                    if (c, r) in occ:
-                        continue
-                    for d in DIRS:
-                        prev = (c - d[0], r - d[1])
-                        if 0 <= prev[0] < cols and 0 <= prev[1] < rows and prev not in occ:
-                            if is_ray_free((c, r), d, occ, cols, rows):
-                                candidates.append(((c, r), d))
-                                
+            for c, r in empty_cells:
+                for d in DIRS:
+                    prev = (c - d[0], r - d[1])
+                    if prev in empty_cells:
+                        if is_ray_free((c, r), d, occ, cols, rows):
+                            candidates.append(((c, r), d))
+                            
             if not candidates:
                 break
                 
@@ -75,10 +86,9 @@ def generate_dense_level(level_id, cols, rows, min_arrows, max_arrows, target_fi
                 neighbors = []
                 for nd in DIRS:
                     nxt = (curr_tail[0] + nd[0], curr_tail[1] + nd[1])
-                    if 0 <= nxt[0] < cols and 0 <= nxt[1] < rows:
-                        if nxt not in occ and nxt not in used:
-                            weight = 2 if nd == tail_dir else 3
-                            neighbors.extend([nxt] * weight)
+                    if nxt in empty_cells and nxt not in used:
+                        weight = 2 if nd == tail_dir else 3
+                        neighbors.extend([nxt] * weight)
                 if not neighbors:
                     break
                 nxt_tail = random.choice(neighbors)
@@ -90,32 +100,31 @@ def generate_dense_level(level_id, cols, rows, min_arrows, max_arrows, target_fi
             a_id = f"arr_{len(arrows_reverse) + 1}"
             for pt in path:
                 occ[pt] = a_id
+                empty_cells.discard(pt)
             arrows_reverse.append({
                 "id": a_id,
                 "points": path
             })
             
-        # Gap-filler: Check for 2-cell micro-arrows in remaining pockets
-        if (len(occ) / total_cells) < target_fill and len(arrows_reverse) < max_arrows:
-            for r in range(rows):
-                for c in range(cols):
-                    if (c, r) in occ:
-                        continue
-                    placed_gap = False
-                    for d in DIRS:
-                        prev = (c - d[0], r - d[1])
-                        if 0 <= prev[0] < cols and 0 <= prev[1] < rows and prev not in occ:
-                            if is_ray_free((c, r), d, occ, cols, rows):
-                                a_id = f"arr_{len(arrows_reverse) + 1}"
-                                occ[prev] = a_id
-                                occ[(c, r)] = a_id
-                                arrows_reverse.append({
-                                    "id": a_id,
-                                    "points": [prev, (c, r)]
-                                })
-                                placed_gap = True
-                                break
-                                
+        # Fast Gap-filler on remaining empty cells
+        for c, r in list(empty_cells):
+            if (c, r) not in empty_cells:
+                continue
+            for d in DIRS:
+                prev = (c - d[0], r - d[1])
+                if prev in empty_cells:
+                    if is_ray_free((c, r), d, occ, cols, rows):
+                        a_id = f"arr_{len(arrows_reverse) + 1}"
+                        occ[prev] = a_id
+                        occ[(c, r)] = a_id
+                        empty_cells.discard(prev)
+                        empty_cells.discard((c, r))
+                        arrows_reverse.append({
+                            "id": a_id,
+                            "points": [prev, (c, r)]
+                        })
+                        break
+                        
         cur_fill = len(occ) / total_cells
         if cur_fill > best_fill:
             best_fill = cur_fill
@@ -132,11 +141,11 @@ def generate_dense_level(level_id, cols, rows, min_arrows, max_arrows, target_fi
                 "grid_size": { "rows": rows, "columns": cols },
                 "star_thresholds": {
                     "three_stars": len(arrows_forward),
-                    "two_stars": len(arrows_forward) + (2 if len(arrows_forward) <= 12 else 3)
+                    "two_stars": len(arrows_forward) + (2 if len(arrows_forward) <= 12 else 4)
                 },
                 "arrows": arrows_forward
             }
-            if best_fill >= target_fill and len(arrows_reverse) >= min_arrows:
+            if best_fill >= target_fill * 0.95 and len(arrows_reverse) >= min_arrows:
                 break
                 
     return best_level
@@ -145,60 +154,67 @@ def build_level_specs():
     specs = []
     
     # 200 Levels across 8 Chapters (25 levels per chapter)
+    # Chapter 1: 4x4 -> 6x6
+    # Chapter 2: 6x6 -> 8x8
+    # Chapter 3: 8x8 -> 10x10
+    # Chapter 4: 10x10 -> 12x12
+    # Chapter 5: 12x12 -> 14x14
+    # Chapter 6: 14x14 -> 16x16
+    # Chapter 7: 16x16 -> 18x18
+    # Chapter 8: 18x18 -> 20x20
+    
     for lvl in range(1, 201):
         chap_idx = (lvl - 1) // 25
         chap_lvl = (lvl - 1) % 25 + 1 # 1 to 25
         palette = CHAPTER_PALETTES[chap_idx]
         diff = DIFF_NAMES[chap_idx]
         
-        # Chapter 1 (Levels 1-25) - Special onboarding curve
-        if chap_idx == 0:
-            if chap_lvl <= 5: # 1-5: 4x4
-                min_a = 2 + (chap_lvl + 1) // 2
-                max_a = 2 + chap_lvl
-                specs.append((lvl, 4, 4, min_a, max_a, 0.45 + chap_lvl * 0.04, [2, 2, 3], "tutorial", palette))
-            elif chap_lvl <= 10: # 6-10: 5x5
-                idx = chap_lvl - 6
-                min_a = 6 + idx // 2
-                max_a = 7 + idx
-                specs.append((lvl, 5, 5, min_a, max_a, 0.65 + idx * 0.025, [2, 3, 3, 4], "easy", palette))
-            elif chap_lvl <= 20: # 11-20: 6x6 Step-Up!
-                idx = chap_lvl - 11
-                min_a = 10 + idx // 3
-                max_a = 11 + idx
-                specs.append((lvl, 6, 6, min_a, max_a, 0.78 + idx * 0.01, [2, 3, 3, 4], "intermediate", palette))
-            else: # 21-25: 7x7 Finale
-                idx = chap_lvl - 21
-                min_a = 13 + idx // 2
-                max_a = 15 + idx
-                specs.append((lvl, 7, 7, min_a, max_a, 0.82 + idx * 0.015, [2, 3, 3, 4, 4], "advanced", palette))
+        base_dim = 4 + chap_idx * 2 # 4, 6, 8, 10, 12, 14, 16, 18
+        
+        # 3-tier integer progression within each 25-level chapter
+        if chap_lvl <= 8:
+            dim = base_dim
+            sub_idx = chap_lvl - 1
+            ratio = sub_idx / 8.0
+        elif chap_lvl <= 16:
+            dim = base_dim + 1
+            sub_idx = chap_lvl - 9
+            ratio = sub_idx / 8.0
         else:
-            # Chapters 2 to 8 (Levels 26 to 200) - Rhythmic Challenge Wave
-            # In each chapter of 25 levels:
-            # Part 1 (Lv 1-5): 6x6 Chapter Opener / Breather (11-13 arrows, 80-86% fill)
-            # Part 2 (Lv 6-15): 7x7 Serpentine Mazes (15-18 arrows, 82-89% fill)
-            # Part 3 (Lv 16-23): 8x8 Labyrinths (19-23 arrows, 84-91% fill)
-            # Part 4 (Lv 24-25): 8x8 Pinnacle Challenge (22-26 arrows, 88-94% fill!)
-            if chap_lvl <= 5:
-                idx = chap_lvl - 1
-                min_a = 10 + (chap_idx // 3) + idx // 2
-                max_a = 12 + idx
-                specs.append((lvl, 6, 6, min_a, max_a, 0.80 + idx * 0.012, [2, 3, 3, 4], diff, palette))
-            elif chap_lvl <= 15:
-                idx = chap_lvl - 6
-                min_a = 14 + (chap_idx // 2) + idx // 3
-                max_a = 16 + idx
-                specs.append((lvl, 7, 7, min_a, max_a, 0.82 + idx * 0.007, [2, 3, 3, 4, 4], diff, palette))
-            elif chap_lvl <= 23:
-                idx = chap_lvl - 16
-                min_a = 18 + (chap_idx // 2) + idx // 3
-                max_a = 21 + idx
-                specs.append((lvl, 8, 8, min_a, max_a, 0.84 + idx * 0.008, [2, 3, 3, 4], diff, palette))
-            else: # 24-25 Pinnacle
-                idx = chap_lvl - 24
-                min_a = 21 + (chap_idx // 2) + idx
-                max_a = 24 + idx * 2
-                specs.append((lvl, 8, 8, min_a, max_a, 0.88 + idx * 0.02, [2, 2, 3, 3, 4], diff, palette))
+            dim = base_dim + 2
+            sub_idx = chap_lvl - 17
+            ratio = sub_idx / 9.0
+            
+        total_c = dim * dim
+        
+        # Target fill and arrow profile smoothly parameterized by grid scale
+        if dim <= 5:
+            min_a = max(2, int(total_c * 0.20))
+            max_a = int(total_c * 0.35)
+            target_fill = 0.50 + ratio * 0.15
+            profile = [2, 2, 3] if dim == 4 else [2, 3, 3, 4]
+        elif dim <= 8:
+            min_a = int(total_c * 0.24)
+            max_a = int(total_c * 0.38)
+            target_fill = 0.72 + ratio * 0.12
+            profile = [2, 3, 3, 4, 4]
+        elif dim <= 12:
+            min_a = int(total_c * 0.22)
+            max_a = int(total_c * 0.35)
+            target_fill = 0.68 + ratio * 0.10
+            profile = [2, 3, 3, 4, 4, 5]
+        elif dim <= 16:
+            min_a = int(total_c * 0.20)
+            max_a = int(total_c * 0.32)
+            target_fill = 0.64 + ratio * 0.08
+            profile = [2, 3, 3, 4, 4, 5]
+        else: # 17 to 20
+            min_a = int(total_c * 0.18)
+            max_a = int(total_c * 0.28)
+            target_fill = 0.62 + ratio * 0.08
+            profile = [2, 3, 3, 4, 4, 5]
+            
+        specs.append((lvl, dim, dim, min_a, max_a, target_fill, profile, diff, palette))
                 
     return specs
 
@@ -231,7 +247,8 @@ def main():
     os.makedirs(LEVELS_DIR, exist_ok=True)
     
     specs = build_level_specs()
-    print(f"Generating {len(specs)} levels with strict validation...")
+    print(f"Generating {len(specs)} levels with strict validation across 8 Worlds (4x4 to 20x20)...")
+    start_time = time.time()
     
     for lvl, c, r, min_a, max_a, target_fill, profile, diff, palette in specs:
         data = None
@@ -245,12 +262,14 @@ def main():
         out_path = os.path.join(LEVELS_DIR, f"level_{lvl:03d}.json")
         with open(out_path, "w", encoding="utf-8") as fp:
             json.dump(data, fp, indent=2)
+            
         total_c = c * r
         occ_c = sum(len(a["points"]) for a in data["arrows"])
         if lvl % 25 == 0 or lvl == 1 or lvl == 200:
-            print(f"Level {lvl:03d} [{diff:12s}]: Grid {c}x{r} | Arrows: {len(data['arrows']):2d} | Cells: {occ_c:2d}/{total_c:2d} ({occ_c/total_c*100:.1f}%)")
+            print(f"Level {lvl:03d} [{diff:12s}]: Grid {c:2d}x{r:2d} | Arrows: {len(data['arrows']):2d} | Cells: {occ_c:3d}/{total_c:3d} ({occ_c/total_c*100:.1f}%)")
 
-    print("All 200 levels generated and validated successfully!")
+    total_time = round(time.time() - start_time, 2)
+    print(f"All 200 levels generated and validated successfully in {total_time}s!")
 
 if __name__ == "__main__":
     main()

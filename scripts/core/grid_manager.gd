@@ -115,10 +115,11 @@ func _draw() -> void:
 		
 	# Draw subtle dot grid / clean light grid
 	var dot_color = Color(0.80, 0.88, 0.96, 0.55)
+	var dot_radius: float = clampf(cell_size * 0.045, 1.2, 2.5)
 	for r in range(grid_size.y):
 		for c in range(grid_size.x):
 			var center = get_cell_center_px(Vector2i(c, r))
-			draw_circle(center, 2.5, dot_color)
+			draw_circle(center, dot_radius, dot_color)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if is_input_locked:

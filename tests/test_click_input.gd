@@ -28,54 +28,55 @@ static func run(caller_node: Node) -> bool:
 		main_scene.queue_free()
 		return false
 		
-	# 1. Find an unblocked arrow dynamically
-	var unblocked_arrow: ArrowController = null
+	# 1. Test clicking a blocked arrow first (while initial obstacles are present)
 	var blocked_arrow: ArrowController = null
-	
+	for a in grid_manager.active_arrows_list:
+		if not PathValidator.can_arrow_escape_polyline(a.grid_points, a.arrow_id, grid_manager.grid_occupancy, grid_manager.grid_size):
+			blocked_arrow = a
+			break
+			
+	if blocked_arrow != null:
+		var hearts_pre = GameManager.current_hearts
+		var b_pt = blocked_arrow.grid_points[0]
+		var b_pos = grid_manager.get_cell_center_px(b_pt)
+		var evt_b = InputEventMouseButton.new()
+		evt_b.button_index = MOUSE_BUTTON_LEFT
+		evt_b.pressed = true
+		evt_b.position = b_pos
+		grid_manager._unhandled_input(evt_b)
+		await tree.process_frame
+		
+		if grid_manager.active_arrows_list.size() != initial_count or GameManager.current_hearts != hearts_pre - 1:
+			push_error("Blocked arrow click logic failed")
+			main_scene.queue_free()
+			return false
+			
+	# 2. Test clicking an unblocked arrow dynamically
+	var unblocked_arrow: ArrowController = null
 	for a in grid_manager.active_arrows_list:
 		if PathValidator.can_arrow_escape_polyline(a.grid_points, a.arrow_id, grid_manager.grid_occupancy, grid_manager.grid_size):
-			if unblocked_arrow == null:
-				unblocked_arrow = a
-		else:
-			if blocked_arrow == null:
-				blocked_arrow = a
+			unblocked_arrow = a
+			break
 				
 	if unblocked_arrow == null:
 		push_error("No unblocked arrow found on Level 2")
 		main_scene.queue_free()
 		return false
 		
-	# Click the unblocked arrow -> must escape
+	var count_before_escape = grid_manager.active_arrows_list.size()
 	var click_pt = unblocked_arrow.grid_points[0]
 	var click_pos = grid_manager.get_cell_center_px(click_pt)
-	var evt1 = InputEventMouseButton.new()
-	evt1.button_index = MOUSE_BUTTON_LEFT
-	evt1.pressed = true
-	evt1.position = click_pos
-	grid_manager._unhandled_input(evt1)
+	var evt_u = InputEventMouseButton.new()
+	evt_u.button_index = MOUSE_BUTTON_LEFT
+	evt_u.pressed = true
+	evt_u.position = click_pos
+	grid_manager._unhandled_input(evt_u)
 	await tree.process_frame
 	
-	if grid_manager.active_arrows_list.size() != initial_count - 1:
+	if grid_manager.active_arrows_list.size() != count_before_escape - 1:
 		push_error("Unblocked arrow failed to escape on click")
 		main_scene.queue_free()
 		return false
 		
-	# 2. If there's a blocked arrow, click it -> must deduct heart and stay
-	if blocked_arrow != null and blocked_arrow in grid_manager.active_arrows_list:
-		var hearts_pre = GameManager.current_hearts
-		var b_pt = blocked_arrow.grid_points[0]
-		var b_pos = grid_manager.get_cell_center_px(b_pt)
-		var evt2 = InputEventMouseButton.new()
-		evt2.button_index = MOUSE_BUTTON_LEFT
-		evt2.pressed = true
-		evt2.position = b_pos
-		grid_manager._unhandled_input(evt2)
-		await tree.process_frame
-		
-		if grid_manager.active_arrows_list.size() != initial_count - 1 or GameManager.current_hearts != hearts_pre - 1:
-			push_error("Blocked arrow click logic failed")
-			main_scene.queue_free()
-			return false
-			
 	main_scene.queue_free()
 	return true

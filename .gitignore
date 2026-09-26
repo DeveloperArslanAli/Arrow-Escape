@@ -15,3 +15,8 @@ Thumbs.db
 builds/
 *.apk
 *.aab
+
+# Python
+__pycache__/
+*.pyc
+

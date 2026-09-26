@@ -93,9 +93,9 @@ static func _search(
 	return false
 
 static func _compute_hash(active_arrows: Array[Dictionary]) -> int:
-	var h: int = 17
+	var h: int = 0
 	for a in active_arrows:
-		h = (h * 31 + a["id"].hash()) & 0x7FFFFFFF
+		h ^= a["id"].hash()
 	return h
 
 static func get_hint(grid_size: Vector2i, arrows: Array) -> String:

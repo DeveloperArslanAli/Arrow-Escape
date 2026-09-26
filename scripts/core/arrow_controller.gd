@@ -36,7 +36,7 @@ func setup_polyline(
 	grid_points = pts
 	arrow_color = col
 	cell_size = c_size
-	line_width = clampf(cell_size * 0.28, 8.0, 16.0)
+	line_width = clampf(cell_size * 0.32, 5.0, 18.0)
 	
 	if pts.size() >= 2:
 		var head_pt = pts[-1]
@@ -83,7 +83,8 @@ func _draw() -> void:
 		head_dir = Vector2(head_dir_vec.x, head_dir_vec.y).normalized()
 		
 	var outline_color: Color = Color("#1E272E")
-	var outline_width: float = line_width + 4.0
+	var outline_extra: float = clampf(cell_size * 0.08, 1.8, 4.0)
+	var outline_width: float = line_width + outline_extra
 	
 	# 1. Hint Glow (if active)
 	if is_highlighted or glow_intensity > 0.0:
@@ -105,8 +106,8 @@ func _draw() -> void:
 
 func _draw_arrowhead(pos: Vector2, dir: Vector2, width: float, color: Color) -> void:
 	var perp: Vector2 = Vector2(-dir.y, dir.x)
-	var head_len: float = width * 1.6
-	var head_span: float = width * 1.3
+	var head_len: float = width * 1.5
+	var head_span: float = width * 1.25
 	
 	var tip: Vector2 = pos + dir * (head_len * 0.5)
 	var base_center: Vector2 = pos - dir * (head_len * 0.5)

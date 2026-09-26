@@ -67,12 +67,12 @@ Prior to accepting any level into the release package:
 
 | World / Chapter | Levels | Grid Dimensions | Arrow Count | Cell Saturation | Target Time |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **World 1: Sky Breeze** | 1 – 25 | 4x4 $\to$ 7x7 | 3 – 15 | 50.0% – 89.8% | 15 – 45s |
-| **World 2: Sunset Coral** | 26 – 50 | 7x7 $\to$ 8x8 | 15 – 23 | 85.0% – 92.2% | 45 – 90s |
-| **World 3: Emerald Glade** | 51 – 75 | 8x8 | 20 – 24 | 88.0% – 92.2% | 60 – 120s |
-| **World 4: Amethyst Twilight** | 76 – 100 | 8x8 | 20 – 24 | 88.0% – 92.2% | 75 – 130s |
-| **World 5: Oceanic Abyss** | 101 – 125 | 8x8 | 21 – 24 | 89.0% – 92.2% | 90 – 140s |
-| **World 6: Golden Dunes** | 126 – 150 | 8x8 | 21 – 24 | 89.0% – 92.2% | 90 – 150s |
-| **World 7: Cherry Blossom** | 151 – 175 | 8x8 | 20 – 23 | 89.0% – 92.2% | 90 – 160s |
-| **World 8: Midnight Obsidian** | 176 – 200 | 8x8 | 21 – 24 | 89.0% – 92.2% | 90 – 180s |
+| **World 1: Sky Breeze** | 1 – 25 | $4\times 4 \to 6\times 6$ | 3 – 12 | 50.0% – 85.0% | 15 – 45s |
+| **World 2: Sunset Coral** | 26 – 50 | $6\times 6 \to 8\times 8$ | 11 – 22 | 75.0% – 88.0% | 30 – 60s |
+| **World 3: Emerald Glade** | 51 – 75 | $8\times 8 \to 10\times 10$ | 18 – 34 | 75.0% – 88.0% | 45 – 90s |
+| **World 4: Amethyst Twilight** | 76 – 100 | $10\times 10 \to 12\times 12$ | 26 – 48 | 72.0% – 86.0% | 60 – 120s |
+| **World 5: Oceanic Abyss** | 101 – 125 | $12\times 12 \to 14\times 14$ | 38 – 60 | 70.0% – 82.0% | 75 – 140s |
+| **World 6: Golden Dunes** | 126 – 150 | $14\times 14 \to 16\times 16$ | 45 – 74 | 68.0% – 80.0% | 90 – 160s |
+| **World 7: Cherry Blossom** | 151 – 175 | $16\times 16 \to 18\times 18$ | 55 – 86 | 65.0% – 76.0% | 100 – 180s |
+| **World 8: Midnight Obsidian** | 176 – 200 | $18\times 18 \to 20\times 20$ | 65 – 100 | 62.0% – 74.0% | 120 – 210s |
 
