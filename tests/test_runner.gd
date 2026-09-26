@@ -70,6 +70,16 @@ func _ready() -> void:
 		print("    [FAIL] TestArrowMotion")
 		failed += 1
 		
+	# Suite 7: Level Select UI Card Visibility & Contrast
+	print("--> Running TestLevelSelectUI (Card Visibility & Permanent Rendering)...")
+	var TestLevelSelectUI = preload("res://tests/test_level_select_ui.gd")
+	if await TestLevelSelectUI.run(self):
+		print("    [PASS] TestLevelSelectUI (All cards permanently visible)")
+		passed += 1
+	else:
+		print("    [FAIL] TestLevelSelectUI")
+		failed += 1
+		
 	print("\n=======================================================")
 	print("TEST RUN COMPLETE: %d Passed, %d Failed" % [passed, failed])
 	print("=======================================================\n")

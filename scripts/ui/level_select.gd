@@ -98,51 +98,161 @@ func _populate_levels() -> void:
 			var is_current: bool = (lvl_id == highest_unlocked)
 			
 			var card: Button = Button.new()
-			card.custom_minimum_size = Vector2(0, 78)
+			card.custom_minimum_size = Vector2(0, 80)
 			card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			card.disabled = not is_unlocked
-			card.alignment = HORIZONTAL_ALIGNMENT_CENTER
+			card.text = "" # Avoid theme button text rendering
 			
-			var card_style = StyleBoxFlat.new()
-			card_style.corner_radius_top_left = 10
-			card_style.corner_radius_top_right = 10
-			card_style.corner_radius_bottom_left = 10
-			card_style.corner_radius_bottom_right = 10
+			# StyleBoxes for all 5 interactive states
+			var style_normal = StyleBoxFlat.new()
+			style_normal.corner_radius_top_left = 12
+			style_normal.corner_radius_top_right = 12
+			style_normal.corner_radius_bottom_left = 12
+			style_normal.corner_radius_bottom_right = 12
+			
+			var style_hover = StyleBoxFlat.new()
+			style_hover.corner_radius_top_left = 12
+			style_hover.corner_radius_top_right = 12
+			style_hover.corner_radius_bottom_left = 12
+			style_hover.corner_radius_bottom_right = 12
+			
+			var style_pressed = StyleBoxFlat.new()
+			style_pressed.corner_radius_top_left = 12
+			style_pressed.corner_radius_top_right = 12
+			style_pressed.corner_radius_bottom_left = 12
+			style_pressed.corner_radius_bottom_right = 12
+			
+			var style_focus = StyleBoxFlat.new()
+			style_focus.corner_radius_top_left = 12
+			style_focus.corner_radius_top_right = 12
+			style_focus.corner_radius_bottom_left = 12
+			style_focus.corner_radius_bottom_right = 12
 			
 			if not is_unlocked:
-				card_style.bg_color = Color(0.9, 0.9, 0.9, 0.6)
-				card_style.border_color = Color(0.8, 0.8, 0.8, 0.4)
-				card_style.border_width_left = 1
-				card_style.border_width_right = 1
-				card_style.border_width_top = 1
-				card_style.border_width_bottom = 1
-				card.text = "%d\n🔒" % lvl_id
+				var locked_bg = Color("#ECEFF1")
+				var locked_border = Color("#CFD8DC")
+				style_normal.bg_color = locked_bg
+				style_normal.border_color = locked_border
+				style_normal.border_width_left = 1
+				style_normal.border_width_top = 1
+				style_normal.border_width_right = 1
+				style_normal.border_width_bottom = 1
+				
+				style_hover.bg_color = locked_bg
+				style_hover.border_color = locked_border
+				style_hover.border_width_left = 1
+				style_hover.border_width_top = 1
+				style_hover.border_width_right = 1
+				style_hover.border_width_bottom = 1
+				
+				style_pressed.bg_color = locked_bg
+				style_focus.bg_color = locked_bg
 			else:
 				if is_current:
-					card_style.bg_color = Color.WHITE
-					card_style.border_color = h_color
-					card_style.border_width_left = 2
-					card_style.border_width_right = 2
-					card_style.border_width_top = 2
-					card_style.border_width_bottom = 2
+					style_normal.bg_color = Color.WHITE
+					style_normal.border_color = h_color
+					style_normal.border_width_left = 2
+					style_normal.border_width_top = 2
+					style_normal.border_width_right = 2
+					style_normal.border_width_bottom = 2
+					style_normal.shadow_color = Color(h_color.r, h_color.g, h_color.b, 0.25)
+					style_normal.shadow_size = 4
+					style_normal.shadow_offset = Vector2(0, 2)
 					target_focus_node = card
 				else:
-					card_style.bg_color = Color.WHITE
-					card_style.border_color = Color(0.85, 0.85, 0.85, 0.8)
-					card_style.border_width_left = 1
-					card_style.border_width_right = 1
-					card_style.border_width_top = 1
-					card_style.border_width_bottom = 1
+					style_normal.bg_color = Color.WHITE
+					style_normal.border_color = Color("#E2E8F0")
+					style_normal.border_width_left = 1
+					style_normal.border_width_top = 1
+					style_normal.border_width_right = 1
+					style_normal.border_width_bottom = 1
+					style_normal.shadow_color = Color(0, 0, 0, 0.04)
+					style_normal.shadow_size = 3
+					style_normal.shadow_offset = Vector2(0, 2)
+					
+				# Hover: gentle chapter tint with accent border (NOT generic blue theme!)
+				style_hover.bg_color = Color(h_color.r, h_color.g, h_color.b, 0.08)
+				style_hover.border_color = h_color
+				style_hover.border_width_left = 2
+				style_hover.border_width_top = 2
+				style_hover.border_width_right = 2
+				style_hover.border_width_bottom = 2
 				
-				var stars_text: String = ""
-				for s in range(stars):
-					stars_text += "★"
-				for s in range(3 - stars):
-					stars_text += "☆"
-				card.text = "%d\n%s" % [lvl_id, stars_text]
+				# Pressed: subtle depressed shade
+				style_pressed.bg_color = Color("#E2E8F0")
+				style_pressed.border_color = h_color
+				style_pressed.border_width_left = 2
+				style_pressed.border_width_top = 2
+				style_pressed.border_width_right = 2
+				style_pressed.border_width_bottom = 2
 				
-			card.add_theme_stylebox_override("normal", card_style)
-			card.add_theme_stylebox_override("disabled", card_style)
+				# Focus
+				style_focus.bg_color = Color.WHITE
+				style_focus.border_color = h_color
+				style_focus.border_width_left = 2
+				style_focus.border_width_top = 2
+				style_focus.border_width_right = 2
+				style_focus.border_width_bottom = 2
+				
+			card.add_theme_stylebox_override("normal", style_normal)
+			card.add_theme_stylebox_override("hover", style_hover)
+			card.add_theme_stylebox_override("pressed", style_pressed)
+			card.add_theme_stylebox_override("focus", style_focus)
+			card.add_theme_stylebox_override("disabled", style_normal)
+			
+			# Safeguard font color overrides
+			card.add_theme_color_override("font_color", Color("#1E293B"))
+			card.add_theme_color_override("font_hover_color", Color("#1E293B"))
+			card.add_theme_color_override("font_pressed_color", Color("#1E293B"))
+			card.add_theme_color_override("font_focus_color", Color("#1E293B"))
+			card.add_theme_color_override("font_disabled_color", Color("#94A3B8"))
+			
+			# Child VBox for permanent, high-contrast labels
+			var vbox = VBoxContainer.new()
+			vbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+			vbox.add_theme_constant_override("separation", 2)
+			
+			# Level Number Label
+			var num_label = Label.new()
+			num_label.text = str(lvl_id)
+			num_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			num_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			if is_unlocked:
+				num_label.add_theme_font_size_override("font_size", 20)
+				num_label.add_theme_color_override("font_color", Color("#1E293B"))
+			else:
+				num_label.add_theme_font_size_override("font_size", 18)
+				num_label.add_theme_color_override("font_color", Color("#94A3B8"))
+			vbox.add_child(num_label)
+			
+			# Sub-label: Stars, PLAY badge, or Lock
+			var sub_label = Label.new()
+			sub_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			sub_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			
+			if is_unlocked:
+				if stars > 0:
+					var stars_text: String = ""
+					for s in range(stars):
+						stars_text += "★ "
+					for s in range(3 - stars):
+						stars_text += "☆ "
+					sub_label.text = stars_text.strip_edges()
+					sub_label.add_theme_color_override("font_color", Color("#F59E0B")) # Warm amber gold
+					sub_label.add_theme_font_size_override("font_size", 13)
+				else:
+					sub_label.text = "PLAY"
+					sub_label.add_theme_color_override("font_color", h_color)
+					sub_label.add_theme_font_size_override("font_size", 12)
+			else:
+				sub_label.text = "🔒"
+				sub_label.add_theme_color_override("font_color", Color("#94A3B8"))
+				sub_label.add_theme_font_size_override("font_size", 13)
+			vbox.add_child(sub_label)
+			
+			card.add_child(vbox)
 			
 			var level_to_load = lvl_id
 			card.pressed.connect(func():
