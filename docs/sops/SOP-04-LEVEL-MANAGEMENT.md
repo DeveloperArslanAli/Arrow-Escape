@@ -1,6 +1,6 @@
-# SOP-04: Level Data Architecture & Progression
+# SOP-04: Level Data Architecture & Progression (Winding Polyline Edition)
 ## Purpose & Scope
-Specifies the canonical JSON schema for levels, data validation gates, pack organization, and dynamic loading procedures.
+Specifies the canonical JSON schema for winding polyline levels, data validation gates, pack organization, and dynamic loading procedures.
 
 ---
 
@@ -10,61 +10,64 @@ Every level file in `res://data/levels/level_XXX.json` must strictly conform to 
 
 ```json
 {
-  "level_id": 1,
-  "difficulty": "tutorial",
+  "level_id": 11,
+  "difficulty": "easy",
   "grid_size": {
-    "rows": 3,
-    "columns": 3
+    "rows": 5,
+    "columns": 5
   },
   "star_thresholds": {
-    "three_stars": 3,
-    "two_stars": 5
+    "three_stars": 6,
+    "two_stars": 8
   },
   "arrows": [
     {
-      "id": "arrow_1",
-      "row": 1,
-      "column": 0,
-      "direction": "left"
+      "id": "arr_1",
+      "color": "#2B7DE9",
+      "points": [
+        [0, 2],
+        [1, 2],
+        [1, 1],
+        [2, 1]
+      ]
     },
     {
-      "id": "arrow_2",
-      "row": 1,
-      "column": 1,
-      "direction": "down"
-    },
-    {
-      "id": "arrow_3",
-      "row": 2,
-      "column": 1,
-      "direction": "right"
+      "id": "arr_2",
+      "color": "#E04848",
+      "points": [
+        [3, 3],
+        [3, 2],
+        [4, 2]
+      ]
     }
   ]
 }
 ```
 
+- `points[0]` is the **tail**.
+- `points[-1]` is the **arrowhead**.
+- Consecutive points must be strictly orthogonally adjacent: $|c_{j+1} - c_j| + |r_{j+1} - r_j| = 1$.
+
 ---
 
 ## 2. STRICT VALIDATION CONSTRAINTS
 
-Prior to loading or accepting any level into the release bundle:
+Prior to accepting any level into the release package:
 1. `level_id` must match file naming convention `level_%03d.json`.
-2. `grid_size.rows >= 2` and `grid_size.columns >= 2`.
+2. `grid_size.rows >= 3` and `grid_size.columns >= 3`.
 3. For every arrow $i$:
-   - $0 \le \text{row}_i < \text{rows}$
-   - $0 \le \text{column}_i < \text{columns}$
-   - `direction` $\in \{\text{"up"}, \text{"down"}, \text{"left"}, \text{"right"}\}$
-4. **No Coordinate Collisions**: No two arrows may share the same `(row, column)`.
-5. **Mandatory Solvability**: Automated headless solver must confirm at least one path to empty board.
+   - $\text{points.size()} \ge 2$.
+   - Every point must satisfy $0 \le c < \text{columns}$ and $0 \le r < \text{rows}$.
+   - No two points of the same or different arrows may overlap (single occupancy).
+4. **Mandatory Solvability**: Automated headless solver must confirm at least one path to empty board.
 
 ---
 
-## 3. DIFFICULTY & PROGRESSION CURVE
+## 3. DIFFICULTY & PROGRESSION CURVE (50 LEVELS)
 
-| Tier | Levels | Grid Dimensions | Arrow Count | Solvability Depth | Target Time |
+| Tier | Levels | Grid Dimensions | Winding Arrows | Solvability Depth | Target Time |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Tutorial** | 1 – 5 | 3x3 | 2 – 4 | 2 – 4 steps | < 15s |
-| **Easy** | 6 – 20 | 4x4 | 5 – 8 | 5 – 8 steps | 20 – 40s |
-| **Intermediate** | 21 – 50 | 5x5 | 9 – 15 | 9 – 15 steps | 45 – 90s |
-| **Advanced** | 51 – 100 | 6x6 | 16 – 24 | 16 – 24 steps | 2 – 3 min |
-| **Expert** | 101+ | 7x7 to 8x8 | 25 – 36 | 25+ steps | 3 – 5 min |
+| **Tutorial** | 1 – 5 | 4x4 | 3 – 7 | 3 – 7 steps | < 20s |
+| **Easy** | 6 – 15 | 5x5 | 5 – 8 | 5 – 8 steps | 20 – 45s |
+| **Intermediate** | 16 – 30 | 6x6 | 8 – 12 | 8 – 12 steps | 45 – 90s |
+| **Expert** | 31 – 50 | 7x7 | 11 – 15 | 11 – 15 steps | 90 – 180s |

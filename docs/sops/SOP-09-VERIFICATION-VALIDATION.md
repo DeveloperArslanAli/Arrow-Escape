@@ -4,15 +4,22 @@ Mandates the automated verification protocols, unit tests, solvability assertion
 
 ---
 
-## 1. HEADLESS EXECUTION COMMAND
+## 1. HEADLESS EXECUTION COMMANDS
 
-All tests must be executable headlessly via the terminal:
+All verification suites must be executed headlessly via the terminal before any commit:
 
+### A. Core Test Suite (Pathing, Solver, 50 Levels, Persistence)
 ```powershell
-& "D:\Godot\Godot_v4.7.2-stable_win64_console.exe" --headless -s tests/run_all_tests.gd
+& "D:\Godot\Godot_v4.7.2-stable_win64_console.exe" --headless tests/TestRunner.tscn
 ```
+- Exits with return code `0` on 100% test pass.
+- Exits with return code `1` if any test fails, blocking bad commits or broken builds.
 
-The script exits with code `0` on 100% test pass, or code `1` if any test fails, blocking bad commits or broken builds.
+### B. Complete Scene Tree & Runtime Lifecycle (60 Frames)
+```powershell
+& "D:\Godot\Godot_v4.7.2-stable_win64_console.exe" --headless scenes/core/Main.tscn --quit-after 60
+```
+- Verifies that all Autoloads, CanvasLayers, UI Modals, and GameBoard initialize with **0 errors and 0 warnings**.
 
 ---
 
@@ -22,20 +29,13 @@ The script exits with code `0` on 100% test pass, or code `1` if any test fails,
 | :--- | :--- | :--- |
 | `tests/test_grid_path.gd` | Directional raycasting, edge escape, blocked paths, collision cases | 100% path calculations match expected truth table. |
 | `tests/test_solver.gd` | Backtracking solver, cycle detection, state memoization, hint resolution | Solves valid boards in < 10ms; rejects unfinishable deadlocks. |
-| `tests/test_levels.gd` | Automated sweep of every level in `res://data/levels/` | **Every single level** has valid JSON, valid bounds, no overlapping cells, and solver returns at least one solution. |
+| `tests/test_levels.gd` | Automated sweep of every level in `res://data/levels/` | **Every single level (1–50)** has valid JSON, valid bounds, no overlapping cells, and solver returns at least one solution. |
 | `tests/test_persistence.gd` | Atomic save writes, backup restoration, corrupted JSON recovery | Save survives simulated failure; fallback retains valid state. |
 
 ---
 
-## 3. TEST ASSERTION PATTERN
+## 3. QUALITY GATES BEFORE COMMITTING
 
-Tests follow standard GDScript assertion wrappers:
-
-```gdscript
-func assert_true(condition: bool, message: String) -> void:
-    if not condition:
-        push_error("TEST FAILURE: %s" % message)
-        failed_count += 1
-    else:
-        passed_count += 1
-```
+1. `tests/TestRunner.tscn` returns exit code 0 (`4 Passed, 0 Failed`).
+2. Zero compiler warnings or errors reported in Godot console output.
+3. Git working tree is clean.

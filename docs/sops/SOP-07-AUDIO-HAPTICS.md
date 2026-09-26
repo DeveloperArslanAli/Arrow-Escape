@@ -14,34 +14,27 @@ Godot audio layout `res://default_bus_layout.tres`:
 
 ---
 
-## 2. SOUND DESIGN SPECIFICATION & PROCEDURAL FALLBACK
+## 2. PROCEDURAL SOUND SYNTHESIS SPECIFICATION
 
-To guarantee full functionality even before raw external `.wav` files are imported, `AudioManager` includes a lightweight procedural tone generator using `AudioStreamGenerator`:
+To guarantee 100% offline self-containment with zero external audio asset dependencies, [scripts/autoload/audio_manager.gd](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/scripts/autoload/audio_manager.gd) synthesizes crisp audio waves dynamically via `AudioStreamWAV` (16-bit, 44.1 kHz):
 
 | Event | Audio Character | Pitch Variation | Procedural Formula |
 | :--- | :--- | :--- | :--- |
-| **Arrow Tap / Select** | Crisp, gentle pop | None | 440 Hz short decay sine burst (30ms) |
-| **Arrow Escape** | Uplifting chime | Scales up per combo (`+1` semitone) | Pentatonic frequency: $f_0 \cdot 2^{n/12}$ |
-| **Arrow Blocked** | Soft low-frequency thud | Fixed low pitch | 120 Hz decaying sine wave (60ms) |
-| **Level Complete** | 3-tone ascending chord | Fixed | Major triad: C5 - E5 - G5 with warm reverb |
-| **Hint Triggered** | Shimmering bell | Fixed high | 880 Hz dual harmonic with gentle flutter |
+| **Arrow Tap** | Crisp, gentle pop | Fixed | $f = 520\,\text{Hz}$, duration $0.04\,\text{s}$, envelope $\exp(-4t)$ |
+| **Arrow Escape** | Uplifting chime | Scales up per combo streak | Pentatonic scale: $f = 440 \cdot 2^{s/12}$ semitones $\{0, 2, 4, 7, 9, 12, 14, 16\}$ |
+| **Arrow Collision** | Low-frequency thud | Fixed low pitch | $f = 130\,\text{Hz}$, duration $0.12\,\text{s}$, envelope $\exp(-4t)$ |
+| **Level Complete** | Celebratory arpeggio | 4-tone ascending | Major chord: $\{523.25, 659.25, 783.99, 1046.50\}\,\text{Hz}$ |
+| **Hint Triggered** | Shimmering chime | Fixed high | $f = 880\,\text{Hz}$ with gentle flutter |
 
 ---
 
 ## 3. MOBILE HAPTIC FEEDBACK
 
-Haptic vibrations are executed via native Godot API with a user toggle in Settings:
+Haptic vibrations are executed via native Godot API (`Input.vibrate_handheld(ms)`) gated by `SaveManager.save_data.settings.haptics_enabled`:
 
-```gdscript
-func trigger_haptic(type: String) -> void:
-    if not SaveManager.settings.haptics_enabled:
-        return
-        
-    match type:
-        "tap":
-            Input.vibrate_handheld(8)   # Light tap
-        "blocked":
-            Input.vibrate_handheld(25)  # Soft warning thud
-        "success":
-            Input.vibrate_handheld(45)  # Celebratory pulse
-```
+| Action | Duration (ms) | Tactile Sensation |
+| :--- | :--- | :--- |
+| **Arrow Selection / Tap** | `8 ms` | Ultra-light subtle click |
+| **Successful Arrow Escape** | `15 ms` | Satisfying release pulse |
+| **Arrow Collision / Blocked** | `28 ms` | Warning thud |
+| **Level Complete Victory** | `45 ms` | Celebratory double buzz |

@@ -27,12 +27,12 @@ Mandates the step-by-step engineering workflow whenever an engineer or AI agent 
                ▼
 ┌───────────────────────────────┐
 │ 4. HEADLESS V&V EXECUTION     │ Run automated test runner via Godot CLI:
-│                               │ tests/run_all_tests.gd
+│                               │ tests/TestRunner.tscn
 └──────────────┬────────────────┘
                ▼
 ┌───────────────────────────────┐
 │ 5. MEMORY GRAPH COMMITTAL     │ Update ADR / Invariant table if architecture
-│                               │ changed. Report concise results.
+│                               │ changed. Commit to Git.
 └───────────────────────────────┘
 ```
 
@@ -41,6 +41,6 @@ Mandates the step-by-step engineering workflow whenever an engineer or AI agent 
 ## 2. HALLUCINATION & DRIFT DEFENSE RULES
 
 1. **Never guess API signatures**: Always verify against the existing codebase or Godot 4.x documentation.
-2. **Never break existing headless tests**: If an edit causes any test in `tests/` to fail, the change is considered rejected until fixed.
+2. **Never break existing headless tests**: If an edit causes any test in `tests/TestRunner.tscn` to fail, the change is considered rejected until fixed.
 3. **No hidden global state**: Do not store transient level states in Autoloads. Autoloads are for persistent services and cross-scene coordination only.
 4. **Preserve backward compatibility**: Level JSON schemas and Save files must remain backwards compatible via version numbers (`schema_version`).
