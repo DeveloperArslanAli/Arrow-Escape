@@ -1,20 +1,21 @@
 # 🧠 MEMORY GRAPH & KNOWLEDGE TOPOLOGY
 ## Arrow Escape (Winding Paths Edition — "Arrows Puzzle Escape" Style)
 
-> **Document Version:** 2.0.0  
+> **Document Version:** 2.1.0  
 > **Game Archetype:** Winding/Bent Arrow Puzzle (Inspired by *Arrows – Puzzle Escape*)  
 > **Engine:** Godot Engine 4.x (GDScript) · Mobile Portrait  
-> **Key Mechanics:** Multi-segment orthogonal winding arrows, 3-Hearts life system, live timer, slither escape, collision recoil, and 100% solvability guarantee.
+> **Key Mechanics:** Multi-segment orthogonal winding arrows, 3-Hearts life system, live timer, polyline slither escape along track, elastic bonk recoil, reverse-DAG 50-level saturation scaling, and 100% solvability guarantee.
 
 ---
 
-## 1. AGENT EXECUTION ROUTER (V2.0)
+## 1. AGENT EXECUTION ROUTER (V2.1)
 
 | Task Domain | Primary SOP | Key Source Files | Verification Target |
 | :--- | :--- | :--- | :--- |
-| **Winding Arrow / Polyline Raycast / Slither** | `SOP-02-GRID-MOVEMENT.md` | `scripts/core/arrow_controller.gd`<br>`scripts/core/grid_manager.gd`<br>`scripts/core/path_validator.gd` | `res://tests/test_grid_path.gd` |
+| **Winding Arrow / Polyline Raycast / Slither** | `SOP-02-GRID-MOVEMENT.md` | `scripts/core/arrow_controller.gd`<br>`scripts/core/grid_manager.gd`<br>`scripts/core/path_validator.gd` | `res://tests/test_grid_path.gd`<br>`res://tests/test_arrow_motion.gd` |
 | **Polyline Solvability & Hint Solver** | `SOP-03-SOLVER-ALGORITHM.md` | `scripts/solver/solver_engine.gd` | `res://tests/test_solver.gd` |
-| **Winding Level JSON Schema & Packs** | `SOP-04-LEVEL-MANAGEMENT.md` | `data/levels/`<br>`scripts/core/level_manager.gd` | `res://tests/test_levels.gd` |
+| **High-Density Reverse-DAG Level Packs** | `SOP-04-LEVEL-MANAGEMENT.md` | `data/levels/`<br>`scripts/generator/generate_dense_levels.py`<br>`scripts/core/level_manager.gd` | `res://tests/test_levels.gd` |
+| **Click Input & Debounce Gatekeeping** | `SOP-02-GRID-MOVEMENT.md` | `scripts/core/grid_manager.gd`<br>`scenes/core/Main.tscn` | `res://tests/test_click_input.gd` |
 | **Hearts (3 Lives), Timer, Game FSM** | `SOP-05-STATE-LIFECYCLE.md` | `scripts/autoload/game_manager.gd` | `res://tests/TestRunner.tscn` |
 | **Top Sky-Blue Header, HUD Pills, Bottom Bar** | `SOP-06-UI-DESIGN-SYSTEM.md` | `scenes/ui/GameHUD.tscn`<br>`scripts/ui/game_hud.gd` | Runtime Headless UI Test |
 | **Audio, Synth, Slither & Bump Haptics** | `SOP-07-AUDIO-HAPTICS.md` | `scripts/autoload/audio_manager.gd` | Audio Bus triggers |
