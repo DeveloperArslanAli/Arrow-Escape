@@ -63,11 +63,16 @@ Prior to accepting any level into the release package:
 
 ---
 
-## 3. DIFFICULTY & PROGRESSION CURVE (50 LEVELS)
+## 3. DIFFICULTY & PROGRESSION CURVE (200 LEVELS / 8 WORLDS)
 
-| Tier | Levels | Grid Dimensions | Winding Arrows | Solvability Depth | Target Time |
+| World / Chapter | Levels | Grid Dimensions | Arrow Count | Cell Saturation | Target Time |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Tutorial** | 1 – 5 | 4x4 | 3 – 7 | 3 – 7 steps | < 20s |
-| **Easy** | 6 – 15 | 5x5 | 5 – 8 | 5 – 8 steps | 20 – 45s |
-| **Intermediate** | 16 – 30 | 6x6 | 8 – 12 | 8 – 12 steps | 45 – 90s |
-| **Expert** | 31 – 50 | 7x7 | 11 – 15 | 11 – 15 steps | 90 – 180s |
+| **World 1: Sky Breeze** | 1 – 25 | 4x4 $\to$ 7x7 | 3 – 15 | 50.0% – 89.8% | 15 – 45s |
+| **World 2: Sunset Coral** | 26 – 50 | 7x7 $\to$ 8x8 | 15 – 23 | 85.0% – 92.2% | 45 – 90s |
+| **World 3: Emerald Glade** | 51 – 75 | 8x8 | 20 – 24 | 88.0% – 92.2% | 60 – 120s |
+| **World 4: Amethyst Twilight** | 76 – 100 | 8x8 | 20 – 24 | 88.0% – 92.2% | 75 – 130s |
+| **World 5: Oceanic Abyss** | 101 – 125 | 8x8 | 21 – 24 | 89.0% – 92.2% | 90 – 140s |
+| **World 6: Golden Dunes** | 126 – 150 | 8x8 | 21 – 24 | 89.0% – 92.2% | 90 – 150s |
+| **World 7: Cherry Blossom** | 151 – 175 | 8x8 | 20 – 23 | 89.0% – 92.2% | 90 – 160s |
+| **World 8: Midnight Obsidian** | 176 – 200 | 8x8 | 21 – 24 | 89.0% – 92.2% | 90 – 180s |
+

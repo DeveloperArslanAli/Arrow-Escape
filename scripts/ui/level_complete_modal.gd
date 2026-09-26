@@ -27,6 +27,12 @@ func _on_level_completed(_level_id: int, moves: int, stars: int) -> void:
 	stars_label.text = stars_text.strip_edges()
 	stats_label.text = "Cleared in %d moves!" % moves
 	
+	var next_id: int = _level_id + 1
+	if LevelManager.has_level(next_id):
+		next_button.text = "Next Level ▶"
+	else:
+		next_button.text = "Victory Menu 🏆"
+		
 	show()
 	
 	# Juicing: Spring scale animation for victory card
@@ -45,7 +51,11 @@ func _on_level_completed(_level_id: int, moves: int, stars: int) -> void:
 func _on_next_pressed() -> void:
 	AudioManager.play_tap()
 	hide()
-	GameManager.next_level()
+	var next_id: int = GameManager.current_level_id + 1
+	if LevelManager.has_level(next_id):
+		GameManager.next_level()
+	else:
+		GameManager.change_state(GlobalConstants.GameState.MAIN_MENU)
 
 func _on_replay_pressed() -> void:
 	AudioManager.play_tap()

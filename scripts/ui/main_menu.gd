@@ -21,13 +21,20 @@ func _on_visibility_changed() -> void:
 		_update_menu()
 
 func _update_menu() -> void:
+	var total_levels: int = LevelManager.get_total_levels_count()
 	var unlocked_lvl: int = SaveManager.get_highest_unlocked_level()
-	progress_label.text = "Highest Level: %d" % unlocked_lvl
-	play_button.text = "Play Level %d" % unlocked_lvl
+	var current_play_lvl: int = mini(unlocked_lvl, total_levels)
+	if unlocked_lvl > total_levels:
+		progress_label.text = "All %d Levels Mastered! 🏆" % total_levels
+		play_button.text = "Replay Level %d" % current_play_lvl
+	else:
+		progress_label.text = "Level %d of %d" % [current_play_lvl, total_levels]
+		play_button.text = "Play Level %d" % current_play_lvl
 
 func _on_play_pressed() -> void:
 	AudioManager.play_tap()
-	var current_lvl: int = SaveManager.get_highest_unlocked_level()
+	var total_levels: int = LevelManager.get_total_levels_count()
+	var current_lvl: int = mini(SaveManager.get_highest_unlocked_level(), total_levels)
 	GameManager.start_level(current_lvl)
 
 func _on_levels_pressed() -> void:
