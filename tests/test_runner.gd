@@ -5,6 +5,8 @@ const TestSolver = preload("res://tests/test_solver.gd")
 const TestLevels = preload("res://tests/test_levels.gd")
 const TestPersistence = preload("res://tests/test_persistence.gd")
 
+const TestClickInput = preload("res://tests/test_click_input.gd")
+
 func _ready() -> void:
 	print("\n=======================================================")
 	print("   ARROW ESCAPE — AUTOMATED V&V TEST HARNESS")
@@ -47,6 +49,15 @@ func _ready() -> void:
 		passed += 1
 	else:
 		print("    [FAIL] TestPersistence")
+		failed += 1
+		
+	# Suite 5: Click Input & Arrow Movement Verification
+	print("--> Running TestClickInput (Tap & Motion Verification)...")
+	if await TestClickInput.run(self):
+		print("    [PASS] TestClickInput (Arrow clicking and movement verified)")
+		passed += 1
+	else:
+		print("    [FAIL] TestClickInput")
 		failed += 1
 		
 	print("\n=======================================================")

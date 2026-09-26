@@ -93,11 +93,21 @@ func initialize_board(level_data: Dictionary, available_rect: Rect2) -> void:
 		
 	queue_redraw()
 
+var _last_tap_frame: int = -1
+
 func get_cell_center_px(coord: Vector2i) -> Vector2:
 	return board_origin + Vector2(
 		(float(coord.x) + 0.5) * cell_size,
 		(float(coord.y) + 0.5) * cell_size
 	)
+
+func get_coord_at_px(pos: Vector2) -> Vector2i:
+	if cell_size <= 0.0:
+		return Vector2i(-1, -1)
+	var rel: Vector2 = pos - board_origin
+	var c: int = int(floor(rel.x / cell_size))
+	var r: int = int(floor(rel.y / cell_size))
+	return Vector2i(c, r)
 
 func _draw() -> void:
 	if grid_size.x == 0 or grid_size.y == 0:
@@ -114,15 +124,36 @@ func _unhandled_input(event: InputEvent) -> void:
 	if is_input_locked:
 		return
 		
+	var tap_pos = Vector2.ZERO
+	var has_tap = false
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		_process_tap(event.position)
+		tap_pos = get_canvas_transform().affine_inverse() * event.position
+		has_tap = true
 	elif event is InputEventScreenTouch and event.pressed:
-		_process_tap(event.position)
+		tap_pos = get_canvas_transform().affine_inverse() * event.position
+		has_tap = true
+		
+	if has_tap:
+		_process_tap(tap_pos)
 
-func _process_tap(screen_pos: Vector2) -> void:
-	# Check if clicked on any arrow
+func _process_tap(tap_pos: Vector2) -> void:
+	var cur_frame: int = Engine.get_process_frames()
+	if cur_frame == _last_tap_frame:
+		return
+	_last_tap_frame = cur_frame
+	
+	# 1. Primary check: Discrete grid cell occupancy (foolproof O(1) cell lookup)
+	var cell_coord: Vector2i = get_coord_at_px(tap_pos)
+	if grid_occupancy.has(cell_coord):
+		var arrow_at_cell: ArrowController = grid_occupancy[cell_coord]
+		if arrow_at_cell != null and arrow_at_cell.is_interactive and arrow_at_cell in active_arrows_list:
+			_handle_arrow_clicked(arrow_at_cell)
+			return
+			
+	# 2. Secondary check: Polyline and arrowhead distance check
+	# (allows tapping slightly outside cell bounds or on protruding arrow tips)
 	for a in active_arrows_list:
-		if a.is_interactive and a.contains_point(screen_pos, cell_size * 0.4):
+		if a.is_interactive and a.contains_point(tap_pos, cell_size * 0.5):
 			_handle_arrow_clicked(a)
 			return
 
