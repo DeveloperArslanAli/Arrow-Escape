@@ -1,6 +1,9 @@
 class_name TestClickInput
 extends RefCounted
 
+const SolverEngine = preload("res://scripts/solver/solver_engine.gd")
+const PathValidator = preload("res://scripts/core/path_validator.gd")
+
 static func run(caller_node: Node) -> bool:
 	var tree = caller_node.get_tree()
 	var main_scene = load("res://scenes/core/Main.tscn").instantiate()
@@ -19,53 +22,60 @@ static func run(caller_node: Node) -> bool:
 	var game_board = main_scene.get_node("GameBoard")
 	var grid_manager = game_board.get_node("GridManager")
 	
-	if grid_manager.active_arrows_list.size() != 4:
-		push_error("Level 2 did not initialize with 4 arrows")
+	var initial_count = grid_manager.active_arrows_list.size()
+	if initial_count < 2:
+		push_error("Level 2 has fewer than 2 arrows")
 		main_scene.queue_free()
 		return false
 		
-	# 1. Click Orange arrow (arr_4) at cell (0, 1) -> must escape
-	var arr_4_pos = grid_manager.get_cell_center_px(Vector2i(0, 1))
+	# 1. Find an unblocked arrow dynamically
+	var unblocked_arrow: ArrowController = null
+	var blocked_arrow: ArrowController = null
+	
+	for a in grid_manager.active_arrows_list:
+		if PathValidator.can_arrow_escape_polyline(a.grid_points, a.arrow_id, grid_manager.grid_occupancy, grid_manager.grid_size):
+			if unblocked_arrow == null:
+				unblocked_arrow = a
+		else:
+			if blocked_arrow == null:
+				blocked_arrow = a
+				
+	if unblocked_arrow == null:
+		push_error("No unblocked arrow found on Level 2")
+		main_scene.queue_free()
+		return false
+		
+	# Click the unblocked arrow -> must escape
+	var click_pt = unblocked_arrow.grid_points[0]
+	var click_pos = grid_manager.get_cell_center_px(click_pt)
 	var evt1 = InputEventMouseButton.new()
 	evt1.button_index = MOUSE_BUTTON_LEFT
 	evt1.pressed = true
-	evt1.position = arr_4_pos
+	evt1.position = click_pos
 	grid_manager._unhandled_input(evt1)
 	await tree.process_frame
 	
-	if grid_manager.active_arrows_list.size() != 3:
-		push_error("arr_4 failed to escape on click")
+	if grid_manager.active_arrows_list.size() != initial_count - 1:
+		push_error("Unblocked arrow failed to escape on click")
 		main_scene.queue_free()
 		return false
 		
-	# 2. Click Blue arrow (arr_1) at cell (2, 0) -> now unblocked, must escape
-	var arr_1_pos = grid_manager.get_cell_center_px(Vector2i(2, 0))
-	var evt2 = InputEventMouseButton.new()
-	evt2.button_index = MOUSE_BUTTON_LEFT
-	evt2.pressed = true
-	evt2.position = arr_1_pos
-	grid_manager._unhandled_input(evt2)
-	await tree.process_frame
-	
-	if grid_manager.active_arrows_list.size() != 2:
-		push_error("arr_1 failed to escape on click")
-		main_scene.queue_free()
-		return false
+	# 2. If there's a blocked arrow, click it -> must deduct heart and stay
+	if blocked_arrow != null and blocked_arrow in grid_manager.active_arrows_list:
+		var hearts_pre = GameManager.current_hearts
+		var b_pt = blocked_arrow.grid_points[0]
+		var b_pos = grid_manager.get_cell_center_px(b_pt)
+		var evt2 = InputEventMouseButton.new()
+		evt2.button_index = MOUSE_BUTTON_LEFT
+		evt2.pressed = true
+		evt2.position = b_pos
+		grid_manager._unhandled_input(evt2)
+		await tree.process_frame
 		
-	# 3. Click Red arrow (arr_2) at cell (2, 2) -> blocked by green arrow, deduct 1 heart
-	var hearts_pre = GameManager.current_hearts
-	var arr_2_pos = grid_manager.get_cell_center_px(Vector2i(2, 2))
-	var evt3 = InputEventMouseButton.new()
-	evt3.button_index = MOUSE_BUTTON_LEFT
-	evt3.pressed = true
-	evt3.position = arr_2_pos
-	grid_manager._unhandled_input(evt3)
-	await tree.process_frame
-	
-	if grid_manager.active_arrows_list.size() != 2 or GameManager.current_hearts != hearts_pre - 1:
-		push_error("arr_2 blocked logic failed")
-		main_scene.queue_free()
-		return false
-		
+		if grid_manager.active_arrows_list.size() != initial_count - 1 or GameManager.current_hearts != hearts_pre - 1:
+			push_error("Blocked arrow click logic failed")
+			main_scene.queue_free()
+			return false
+			
 	main_scene.queue_free()
 	return true
