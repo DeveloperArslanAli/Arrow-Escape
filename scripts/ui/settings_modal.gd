@@ -5,6 +5,8 @@ extends Control
 @onready var haptics_check: CheckButton = %HapticsCheck
 @onready var close_button: Button = %CloseButton
 
+@onready var panel: PanelContainer = $Center/Panel
+
 func _ready() -> void:
 	close_button.pressed.connect(_on_close_pressed)
 	sound_check.toggled.connect(_on_sound_toggled)
@@ -18,6 +20,13 @@ func _ready() -> void:
 func _on_visibility_changed() -> void:
 	if visible:
 		_sync_settings_ui()
+		if panel:
+			panel.scale = Vector2(0.65, 0.65)
+			panel.pivot_offset = panel.size * 0.5
+			var tween = create_tween()
+			tween.set_trans(Tween.TRANS_BACK)
+			tween.set_ease(Tween.EASE_OUT)
+			tween.tween_property(panel, "scale", Vector2(1.0, 1.0), 0.3)
 
 func _sync_settings_ui() -> void:
 	var s = SaveManager.save_data.get("settings", {})
