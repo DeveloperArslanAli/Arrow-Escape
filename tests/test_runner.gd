@@ -6,6 +6,7 @@ const TestLevels = preload("res://tests/test_levels.gd")
 const TestPersistence = preload("res://tests/test_persistence.gd")
 
 const TestClickInput = preload("res://tests/test_click_input.gd")
+const TestArrowMotion = preload("res://tests/test_arrow_motion.gd")
 
 func _ready() -> void:
 	print("\n=======================================================")
@@ -58,6 +59,15 @@ func _ready() -> void:
 		passed += 1
 	else:
 		print("    [FAIL] TestClickInput")
+		failed += 1
+		
+	# Suite 6: Polyline Slither Animation & Centering
+	print("--> Running TestArrowMotion (Slither & Center Alignment)...")
+	if await TestArrowMotion.run(self):
+		print("    [PASS] TestArrowMotion (Smooth slither motion verified)")
+		passed += 1
+	else:
+		print("    [FAIL] TestArrowMotion")
 		failed += 1
 		
 	print("\n=======================================================")
