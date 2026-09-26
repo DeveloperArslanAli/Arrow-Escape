@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://scenes/core/GameBoard.tscn" id="2_board"]
+[ext_resource type="PackedScene" path="res://scenes/ui/MainMenu.tscn" id="3_menu"]
+[ext_resource type="PackedScene" path="res://scenes/ui/LevelSelect.tscn" id="4_lselect"]
+[ext_resource type="PackedScene" path="res://scenes/ui/GameHUD.tscn" id="5_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/LevelCompleteModal.tscn" id="6_complete"]
+[ext_resource type="PackedScene" path="res://scenes/ui/SettingsModal.tscn" id="7_settings"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_main")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.968627, 0.960784, 0.937255, 1)
+
+[node name="GameBoard" parent="." instance=ExtResource("2_board")]
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="MainMenu" parent="UILayer" instance=ExtResource("3_menu")]
+
+[node name="LevelSelect" parent="UILayer" instance=ExtResource("4_lselect")]
+visible = false
+
+[node name="GameHUD" parent="UILayer" instance=ExtResource("5_hud")]
+visible = false
+
+[node name="LevelCompleteModal" parent="UILayer" instance=ExtResource("6_complete")]
+visible = false
+
+[node name="SettingsModal" parent="UILayer" instance=ExtResource("7_settings")]
+visible = false

@@ -1,0 +1,32 @@
+{
+  "level_id": 1,
+  "difficulty": "tutorial",
+  "grid_size": {
+    "rows": 3,
+    "columns": 3
+  },
+  "star_thresholds": {
+    "three_stars": 3,
+    "two_stars": 4
+  },
+  "arrows": [
+    {
+      "id": "arr_1",
+      "row": 0,
+      "column": 1,
+      "direction": "up"
+    },
+    {
+      "id": "arr_2",
+      "row": 1,
+      "column": 1,
+      "direction": "up"
+    },
+    {
+      "id": "arr_3",
+      "row": 2,
+      "column": 1,
+      "direction": "up"
+    }
+  ]
+}

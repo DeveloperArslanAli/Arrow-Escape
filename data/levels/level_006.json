@@ -1,0 +1,44 @@
+{
+  "level_id": 6,
+  "difficulty": "easy",
+  "grid_size": {
+    "rows": 4,
+    "columns": 4
+  },
+  "star_thresholds": {
+    "three_stars": 5,
+    "two_stars": 7
+  },
+  "arrows": [
+    {
+      "id": "arr_1",
+      "column": 0,
+      "row": 0,
+      "direction": "down"
+    },
+    {
+      "id": "arr_2",
+      "column": 0,
+      "row": 2,
+      "direction": "left"
+    },
+    {
+      "id": "arr_3",
+      "column": 0,
+      "row": 3,
+      "direction": "right"
+    },
+    {
+      "id": "arr_4",
+      "column": 2,
+      "row": 3,
+      "direction": "up"
+    },
+    {
+      "id": "arr_5",
+      "column": 2,
+      "row": 2,
+      "direction": "left"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "level_id": 13,
+  "difficulty": "intermediate",
+  "grid_size": {
+    "rows": 5,
+    "columns": 5
+  },
+  "star_thresholds": {
+    "three_stars": 9,
+    "two_stars": 12
+  },
+  "arrows": [
+    {
+      "id": "arr_1",
+      "column": 3,
+      "row": 3,
+      "direction": "up"
+    },
+    {
+      "id": "arr_2",
+      "column": 0,
+      "row": 4,
+      "direction": "left"
+    },
+    {
+      "id": "arr_3",
+      "column": 0,
+      "row": 2,
+      "direction": "down"
+    },
+    {
+      "id": "arr_4",
+      "column": 3,
+      "row": 1,
+      "direction": "up"
+    },
+    {
+      "id": "arr_5",
+      "column": 2,
+      "row": 1,
+      "direction": "right"
+    },
+    {
+      "id": "arr_6",
+      "column": 3,
+      "row": 0,
+      "direction": "up"
+    },
+    {
+      "id": "arr_7",
+      "column": 0,
+      "row": 3,
+      "direction": "right"
+    },
+    {
+      "id": "arr_8",
+      "column": 3,
+      "row": 4,
+      "direction": "up"
+    },
+    {
+      "id": "arr_9",
+      "column": 2,
+      "row": 4,
+      "direction": "up"
+    }
+  ]
+}

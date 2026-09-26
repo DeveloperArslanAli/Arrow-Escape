@@ -1,0 +1,17 @@
+# Godot 4.x .gitignore
+.godot/
+*.translation
+*.import
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
+*.swp
+*~
+
+# Export outputs
+builds/
+*.apk
+*.aab
