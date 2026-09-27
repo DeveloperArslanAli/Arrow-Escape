@@ -12,14 +12,17 @@ Thumbs.db
 *~
 
 # Export outputs & Gradle builds
-build/
-builds/
+/build/
+/builds/
 *.apk
 *.aab
 *.idsig
+*.aar
 android/build/.gradle/
 android/build/build/
 android/build/assetPackInstallTime/build/
+android/build/assetPackInstallTime/src/main/assets/
+android/build/libs/
 
 # Keystores (keep repo public safe)
 keystores/*.keystore
