@@ -1,6 +1,6 @@
 {
   "name": "arrow-escape-web",
-  "version": "1.0.2",
+  "version": "2.2.0",
   "description": "Official showcase website and landing page for Arrow Escape puzzle game",
   "main": "index.html",
   "scripts": {

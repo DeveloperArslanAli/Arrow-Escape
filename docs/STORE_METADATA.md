@@ -4,7 +4,7 @@
 **Last Updated:** September 27, 2026  
 **Developer:** Developer Arslan Ali  
 **Package Name:** `com.developerarslanali.arrowescape`  
-**Version:** `2.0.0` (Version Code: `4`)  
+**Version:** `2.2.0` (Version Code: `5`)  
 **Target API:** 36 (Android 16) | **Min API:** 24 (Android 7.0 Nougat)
 
 ---
@@ -87,8 +87,22 @@ Download Arrow Escape today and put your spatial reasoning to the test!
 
 ---
 
-## 5. PRODUCTION BINARIES
+## 5. RELEASE NOTES (What's New in v2.2.0)
 
-- **Google Play Submission:** `build/ArrowEscape.aab` (Android App Bundle, ~52.9 MB, Signed, Target SDK 34)
-- **Direct Sideloading / QA Testing:** `build/ArrowEscape-release.apk` (~52.9 MB, Universal APK, Signed)
+```text
+Arrow Escape v2.2.0 is here!
+• Compliant with Android 16 (Target SDK 36) for peak security & 60 FPS performance.
+• Embedded native debug symbols & R8 optimization for ultra-stable gameplay.
+• Fully responsive 200 mathematically verified levels across 8 worlds (4x4 to 20x20).
+• 100% offline casual puzzle experience with zero battery drain.
+```
+
+---
+
+## 6. PRODUCTION BINARIES
+
+- **Google Play Submission:** `build/ArrowEscape.aab` (Android App Bundle, ~51.7 MB, Target SDK 36, Code 5, Signed with embedded native symbols & ProGuard map)
+- **Direct Sideloading / QA Testing:** `build/ArrowEscape-release.apk` (~51.0 MB, Universal APK, Target SDK 36, Code 5, APK v2 signed)
+- **Standalone Native Symbols Archive:** `build/native-debug-symbols.zip` (~50.4 MB, Play Console Asset Upload)
+- **R8 Mapping File:** `build/mapping.txt` (2.53 MB)
 - **Detailed Checklist:** See [docs/PLAYSTORE_RELEASE_CHECKLIST.md](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/docs/PLAYSTORE_RELEASE_CHECKLIST.md)

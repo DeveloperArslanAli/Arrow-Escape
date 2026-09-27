@@ -1,8 +1,8 @@
-# 🚀 Google Play Store Publication Checklist & Release Guide (Release v2.0)
+# 🚀 Google Play Store Publication Checklist & Release Guide (Release v2.2)
 
 **App Name:** Arrow Escape: Puzzle Grid  
 **Package Identifier:** `com.developerarslanali.arrowescape`  
-**Version Code:** `4` | **Version Name:** `2.0.0`  
+**Version Code:** `5` | **Version Name:** `2.2.0`  
 **Target SDK:** 36 (Android 16) | **Min SDK:** 24 (Android 7.0 Nougat)  
 **Supported Architectures:** ARM64-v8a (64-bit mandatory), ARMv7 (32-bit legacy fallback)  
 **Release Formats:**
