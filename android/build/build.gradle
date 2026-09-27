@@ -124,7 +124,7 @@ android {
         }
 
         ndk {
-            debugSymbolLevel 'NONE'
+            debugSymbolLevel 'SYMBOL_TABLE'
             String[] export_abi_list = getExportEnabledABIs()
             abiFilters export_abi_list
         }
@@ -340,4 +340,50 @@ if (rootProject.tasks.findByPath("copyDebugAARToAppModule") != null) {
 }
 if (rootProject.tasks.findByPath("copyReleaseAARToAppModule") != null) {
     preBuild.mustRunAfter(rootProject.tasks.named("copyReleaseAARToAppModule"))
+}
+
+afterEvaluate {
+    if (tasks.findByName('extractStandardReleaseNativeSymbolTables')) {
+        tasks.named('extractStandardReleaseNativeSymbolTables').configure {
+            doLast {
+                def ndkDir = android.ndkDirectory ?: file("${android.sdkDirectory}/ndk/${versions.ndkVersion}")
+                def objcopyExe = new File(ndkDir, "toolchains/llvm/prebuilt/windows-x86_64/bin/llvm-objcopy.exe")
+                if (!objcopyExe.exists()) {
+                    objcopyExe = new File(ndkDir, "toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-objcopy")
+                }
+                def mergedLibsDir = file("$buildDir/intermediates/merged_native_libs/standardRelease/mergeStandardReleaseNativeLibs/out/lib")
+                def outDir = file("$buildDir/intermediates/native_symbol_tables/standardRelease/extractStandardReleaseNativeSymbolTables/out")
+
+                if (mergedLibsDir.exists()) {
+                    mergedLibsDir.eachDir { archDir ->
+                        def arch = archDir.name
+                        def targetArchDir = new File(outDir, arch)
+                        targetArchDir.mkdirs()
+                        archDir.eachFileMatch(~/.*\.so$/) { soFile ->
+                            def symFile = new File(targetArchDir, "${soFile.name}.sym")
+                            if (objcopyExe.exists()) {
+                                project.exec {
+                                    commandLine objcopyExe.absolutePath, '--only-keep-debug', soFile.absolutePath, symFile.absolutePath
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (tasks.findByName('bundleStandardRelease')) {
+        tasks.named('bundleStandardRelease').configure {
+            finalizedBy('packageNativeDebugSymbolsZip')
+        }
+    }
+}
+
+task packageNativeDebugSymbolsZip(type: Zip) {
+    archiveFileName = 'native-debug-symbols.zip'
+    destinationDirectory = file("$projectDir/../../build")
+    from("$buildDir/intermediates/merged_native_libs/standardRelease/mergeStandardReleaseNativeLibs/out/lib") {
+        include 'arm64-v8a/*.so'
+        include 'armeabi-v7a/*.so'
+    }
 }

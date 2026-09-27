@@ -66,18 +66,32 @@ A dedicated 2048-bit RSA release keystore has been provisioned and configured:
   - `android.permission.VIBRATE` (Haptic feedback when tapping arrows)
   - `android.permission.INTERNET` is **disabled**.
 
-### D. Testing Track & Testers Configuration (Fix for Warning)
-- When publishing to a **Closed Testing** track:
-  1. Open **Testing > Closed testing** in Google Play Console.
-  2. Select your track and click on the **Testers** tab.
-  3. Create an email list of testers (e.g. your own email address) and save.
-  4. Copy the **Join on Android** or **Join on the web** opt-in URL.
-- When publishing directly to **Production**:
-  - No tester list is needed; proceed with standard rollout.
+### D. Testing Track & Testers Configuration (Fix for Warning 1)
+- **Why this warning appears:** When a release is drafted or published to **Internal testing** or **Closed testing**, Google Play Console requires at least one email list with testers assigned to the track.
+- **Resolution Steps:**
+  1. In Google Play Console, go to **Testing > Closed testing** (or **Internal testing**).
+  2. Click **Manage track** on the track where Version 4 was uploaded.
+  3. Click on the **Testers** tab (next to "Releases").
+  4. Under **Testers**, select **Email lists** and check your tester list (or click **Create email list**, enter your testing email addresses such as your team Gmail accounts, and click **Save**).
+  5. Scroll down to **How testers join your test** and copy the **Join on the web** / **Join on Android** URL to share with your testers.
+  6. Click **Save changes** at the bottom right. The warning is dismissed immediately.
+  *Note:* If publishing directly to **Production** (`Release > Production`), this tester warning does NOT apply.
 
-### E. Native Debug Symbols (Fix for Warning)
-- Gradle automatically extracts native symbols into the AAB bundle via `debugSymbolLevel = 'SYMBOL_TABLE'`.
-- If Google Play shows a yellow advisory notice regarding debug symbols, this is non-blocking and you can safely continue.
+### E. Native Debug Symbols & Crash De-obfuscation (Fix for Warning 2)
+- **Why this warning appears:** The game engine uses native C++ code (`libgodot_android.so`, `libc++_shared.so`). Google Play Console advises uploading native debug symbols so that native C++ crash stack traces can be symbolicated in the ANR & Crash reporting dashboard.
+- **Dual Resolution Implemented:**
+  1. **Built into the AAB (`build/ArrowEscape.aab`):**
+     - Gradle's `extractStandardReleaseNativeSymbolTables` hook automatically extracts ELF symbol tables using Android NDK LLVM tools (`llvm-objcopy --only-keep-debug`).
+     - Symbols are packaged directly into the AAB under `BUNDLE-METADATA/com.android.tools.build.debugsymbols/` (`arm64-v8a` and `armeabi-v7a`).
+  2. **Standalone Symbols Archive (`build/native-debug-symbols.zip`):**
+     - Automatically generated during `bundleStandardRelease` (50.39 MB).
+     - If desired, upload directly to Google Play Console:
+       - Open **Release > App bundle explorer**.
+       - Select **Version code 4**.
+       - Navigate to the **Downloads** tab.
+       - Under the **Assets** section, locate **Native debug symbols** and click **Upload**.
+       - Select `build/native-debug-symbols.zip`.
+  *Note:* Google Play flags this as an advisory **Warning** (not a blocking error). The app can be released and published with or without uploading this file.
 
 ---
 
