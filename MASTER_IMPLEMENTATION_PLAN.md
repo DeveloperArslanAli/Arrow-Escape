@@ -227,8 +227,19 @@ To prevent regressions and ensure an enterprise-grade release, the project inclu
   - [x] Verified zero node leaks and steady 60 FPS profile.
 
 - **Milestone 7: Android Export & Google Play Publication Readiness** `[100% COMPLETE]`
-  - [x] Configured [export_presets.cfg](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/export_presets.cfg) for Android (Target SDK 34, ARM64-v8a).
-  - [x] Prepared store metadata, copy, and privacy policy disclosures in [STORE_METADATA.md](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/docs/STORE_METADATA.md).
+  - [x] Configured dual export presets in [export_presets.cfg](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/export_presets.cfg):
+    - `Android (AAB - Play Store)`: Gradle build enabled, Target SDK 34, produces release `build/ArrowEscape.aab` (52.96 MB).
+    - `Android (APK - Release)`: Standalone template export, produces sideloadable `build/ArrowEscape-release.apk` (52.99 MB).
+  - [x] Established release signing keystore (`keystores/release.keystore`, 2048-bit RSA, alias `arrowescape`, 10,000 days validity).
+  - [x] Verified APK cryptographic signatures using Android SDK `apksigner.bat` (v1, v2, v3 schemes active and verified).
+  - [x] Generated high-resolution Google Play Store graphics:
+    - 512x512 px App Icon: [assets/store/icon_512.png](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/assets/store/icon_512.png) (and root [icon.png](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/icon.png)).
+    - 1024x500 px Feature Graphic: [assets/store/feature_graphic_1024x500.png](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/assets/store/feature_graphic_1024x500.png).
+  - [x] Formulated exhaustive publication and compliance manuals:
+    - [PLAYSTORE_RELEASE_CHECKLIST.md](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/docs/PLAYSTORE_RELEASE_CHECKLIST.md) (complete Play Console rollout instructions).
+    - [PRIVACY_POLICY.md](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/docs/PRIVACY_POLICY.md) (100% offline, zero-data collection disclosure).
+    - [STORE_METADATA.md](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/docs/STORE_METADATA.md) (listing copy, keywords, tags, contact info).
+    - [SOP-10-ANDROID-EXPORT-PERF.md](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/docs/sops/SOP-10-ANDROID-EXPORT-PERF.md) (build automation, perf budgets, and CLI commands).
   - [x] Verified headless run of complete scene tree with 0 errors and 0 warnings.
 
 ---
@@ -238,7 +249,9 @@ To prevent regressions and ensure an enterprise-grade release, the project inclu
 The application has achieved full release-candidate status:
 1. [x] All architectural invariants and SOP protocols are documented and enforced in [MEMORY_GRAPH.md](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/MEMORY_GRAPH.md).
 2. [x] 100% of packaged levels (200/200) pass automated headless solvability verification.
-3. [x] Headless test suite ([tests/TestRunner.tscn](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/tests/TestRunner.tscn)) exits with return code 0 (6 Passed, 0 Failed).
-4. [x] Game runs at stable 60 FPS with zero memory leaks.
+3. [x] Headless test suite ([tests/TestRunner.tscn](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/tests/TestRunner.tscn)) exits with return code 0 (7 Passed, 0 Failed).
+4. [x] Game runs at stable 60 FPS with zero memory leaks and GL compatibility renderer.
 5. [x] Save data survives unexpected app kills without corruption via atomic write protocol.
 6. [x] UI scales seamlessly across any Android mobile or tablet aspect ratio with safe-area padding.
+7. [x] Production Android binaries (`ArrowEscape.aab` and `ArrowEscape-release.apk`) generated, cryptographically signed, and validated against Target SDK 34.
+8. [x] Store metadata, privacy policy, 512x512 icon, and 1024x500 banner prepared for immediate Google Play Console submission.

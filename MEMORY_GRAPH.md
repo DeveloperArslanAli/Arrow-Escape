@@ -21,6 +21,7 @@
 | **Chapter-Based Level Select & Auto-Scroll** | `SOP-06-UI-DESIGN-SYSTEM.md` | `scenes/ui/LevelSelect.tscn`<br>`scripts/ui/level_select.gd` | Headless Test & Runtime UI |
 | **Audio, Synth, Slither & Bump Haptics** | `SOP-07-AUDIO-HAPTICS.md` | `scripts/autoload/audio_manager.gd` | Audio Bus triggers |
 | **Atomic Persistence (Hearts, Levels, Stars)** | `SOP-08-PERSISTENCE-ATOMIC.md` | `scripts/autoload/save_manager.gd` | `res://tests/test_persistence.gd` |
+| **Android Export & Play Store Pipeline** | `SOP-10-ANDROID-EXPORT-PERF.md` | `export_presets.cfg`<br>`docs/PLAYSTORE_RELEASE_CHECKLIST.md`<br>`docs/PRIVACY_POLICY.md` | `build/ArrowEscape.aab`<br>`build/ArrowEscape-release.apk` |
 
 ---
 
@@ -55,3 +56,25 @@
 • World 7: Cherry Blossom    (Lvls 151–175)| 16x16->18x18 | Sakura (#FFF0F3)    | Sakura Ruby (#D63031)
 • World 8: Midnight Obsidian (Lvls 176–200)| 18x18->20x20 | Obsidian (#181E24)  | Neon Metallic Slate (#2C3E50)
 ```
+
+---
+
+## 4. PRODUCTION RELEASE & GOOGLE PLAY STORE PIPELINE
+
+- **Package Identifier:** `com.developerarslanali.arrowescape`
+- **Engine Version:** Godot Engine 4.7.2.stable (`res://android/build/.build_version`)
+- **Version Code / Name:** `1` / `1.0.0`
+- **Target SDK / Min SDK:** API 34 (Android 14) / API 24 (Android 7.0)
+- **Supported ABIs:** `arm64-v8a` (Primary 64-bit), `armeabi-v7a` (32-bit legacy fallback)
+- **Release Presets in `export_presets.cfg`:**
+  1. `Android (AAB - Play Store)`: Gradle build enabled (`export_format = 1`). Produces `build/ArrowEscape.aab` (52.96 MB).
+  2. `Android (APK - Release)`: Standalone template export (`export_format = 0`). Produces `build/ArrowEscape-release.apk` (52.99 MB).
+- **Keystore:** `keystores/release.keystore` (RSA 2048-bit, Alias: `arrowescape`, Validity: 10,000 days).
+- **Store Assets:**
+  - High-Res App Icon: `assets/store/icon_512.png` (512x512 PNG) & root `icon.png`.
+  - Feature Graphic: `assets/store/feature_graphic_1024x500.png` (1024x500 PNG).
+- **Release Documentation:**
+  - Play Store Checklist: [`docs/PLAYSTORE_RELEASE_CHECKLIST.md`](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/docs/PLAYSTORE_RELEASE_CHECKLIST.md)
+  - Privacy Policy: [`docs/PRIVACY_POLICY.md`](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/docs/PRIVACY_POLICY.md)
+  - Keystore Security Guide: [`keystores/README.md`](file:///e:/Projects/mobile%20application/Arrow%20Puzzle%20Game/keystores/README.md)
+

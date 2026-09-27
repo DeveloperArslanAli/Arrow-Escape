@@ -254,9 +254,10 @@ godot --headless --export-release "Android (APK - Release)" build/ArrowEscape-re
 ```
 
 ### Publication Documentation & Store Assets
-- 📋 [**Play Store Release Checklist**](file:///docs/PLAYSTORE_RELEASE_CHECKLIST.md) — Complete walkthrough, copywriting metadata, and declaration forms.
-- 🔒 [**Privacy Policy**](file:///docs/PRIVACY_POLICY.md) — 100% offline, zero data collection disclosure for Play Console.
+- 📋 [**Play Store Release Checklist**](docs/PLAYSTORE_RELEASE_CHECKLIST.md) — Complete walkthrough, copywriting metadata, and declaration forms.
+- 🔒 [**Privacy Policy**](docs/PRIVACY_POLICY.md) — 100% offline, zero data collection disclosure for Play Console.
 - 🎨 **Store Graphics:** High-res 512x512 app icon (`assets/store/icon_512.png`) and 1024x500 feature graphic (`assets/store/feature_graphic_1024x500.png`).
+
 
 ---
 
