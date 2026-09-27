@@ -1,0 +1,22 @@
+{
+  "name": "arrow-escape-monorepo",
+  "version": "1.0.2",
+  "description": "Arrow Escape Monorepo containing Godot mobile game project and official website",
+  "private": true,
+  "workspaces": [
+    "web"
+  ],
+  "scripts": {
+    "web": "npm --workspace=web run dev",
+    "web:build": "npm --workspace=web run build"
+  },
+  "keywords": [
+    "arrow-escape",
+    "godot",
+    "puzzle-game",
+    "monorepo",
+    "android"
+  ],
+  "author": "Developer Arslan Ali",
+  "license": "MIT"
+}

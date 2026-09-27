@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arrow Escape — Mindful 2D Spatial Logic Puzzle Game</title>
+  <meta name="description" content="Official website for Arrow Escape: Tap unobstructed arrows, navigate winding multi-segment labyrinths, and escape 200+ expanding grid puzzles across 8 vibrant worlds.">
+  <meta name="keywords" content="arrow escape, puzzle game, mobile game, logic game, spatial reasoning, godot engine, google play">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="#home" class="brand">
+        <img src="assets/logo.svg" alt="Arrow Escape Logo" class="brand-logo">
+        <span>Arrow Escape</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#home" class="nav-link active">Home</a></li>
+          <li><a href="#gameplay" class="nav-link">How to Play</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#worlds" class="nav-link">8 Worlds</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div style="display:flex;align-items:center;gap:16px;">
+        <a href="#gameplay" class="btn-header-cta">
+          <span>Play Demo</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <button class="mobile-menu-btn" aria-label="Toggle Navigation">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero-section">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-pulse"></span>
+          <span>Google Play Publication Ready · Target API 36</span>
+        </div>
+        <h1 class="hero-title">
+          Untangle the Paths.<br>
+          <span class="hero-title-highlight">Escape the Grid.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Experience a calming yet deeply satisfying spatial logic puzzle. Guide multi-segment winding arrows off saturated boards, conquer shifting grid dimensions from 4×4 to 20×20, and clear every level with zero deadlocks.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="#gameplay" class="btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Try Interactive Demo</span>
+          </a>
+          <a href="https://github.com/DeveloperArslanAli/Arrow-Escape" target="_blank" class="btn-secondary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span>GitHub Monorepo</span>
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <h3>200</h3>
+            <p>Verified Levels</p>
+          </div>
+          <div class="stat-item">
+            <h3>8</h3>
+            <p>Thematic Worlds</p>
+          </div>
+          <div class="stat-item">
+            <h3>100%</h3>
+            <p>Guaranteed Solvability</p>
+          </div>
+          <div class="stat-item">
+            <h3>60 FPS</h3>
+            <p>Buttery Smooth GL</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual Device Mockup -->
+      <div class="hero-visual-card">
+        <div class="device-frame">
+          <div class="device-header">
+            <span class="device-badge">WORLD 1 · LEVEL 14</span>
+            <div class="device-lives">❤️❤️❤️</div>
+          </div>
+          <div style="padding:24px 8px;display:flex;justify-content:center;">
+            <svg width="280" height="280" viewBox="0 0 280 280">
+              <!-- Board Grid Background -->
+              <rect width="280" height="280" rx="16" fill="#0E1726" />
+              <!-- Grid lines -->
+              <g stroke="rgba(255,255,255,0.06)" stroke-width="1">
+                <line x1="70" y1="0" x2="70" y2="280"/>
+                <line x1="140" y1="0" x2="140" y2="280"/>
+                <line x1="210" y1="0" x2="210" y2="280"/>
+                <line x1="0" y1="70" x2="280" y2="70"/>
+                <line x1="0" y1="140" x2="280" y2="140"/>
+                <line x1="0" y1="210" x2="280" y2="210"/>
+              </g>
+
+              <!-- Escaping Cyan Arrow -->
+              <g>
+                <path d="M 35 175 L 35 35" stroke="#38BDF8" stroke-width="16" stroke-linecap="round"/>
+                <polygon points="35,15 15,45 55,45" fill="#FFFFFF"/>
+                <circle cx="35" cy="20" r="16" fill="rgba(56, 189, 248, 0.4)" filter="blur(4px)"/>
+              </g>
+
+              <!-- Interlocking Coral Arrow -->
+              <g>
+                <path d="M 105 105 L 245 105" stroke="#FB7185" stroke-width="16" stroke-linecap="round"/>
+                <polygon points="265,105 235,85 235,125" fill="#FFFFFF"/>
+              </g>
+
+              <!-- Winding Emerald Arrow -->
+              <g>
+                <path d="M 175 245 L 175 175 L 105 175" stroke="#34D399" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+                <polygon points="85,175 115,155 115,195" fill="#FFFFFF"/>
+              </g>
+
+              <!-- Gold Arrow pointing Down -->
+              <g>
+                <path d="M 245 175 L 245 245" stroke="#F59E0B" stroke-width="16" stroke-linecap="round"/>
+                <polygon points="245,265 225,235 265,235" fill="#FFFFFF"/>
+              </g>
+            </svg>
+          </div>
+          <div style="text-align:center;font-size:0.8rem;color:var(--text-muted);padding-bottom:8px;">
+            Tap clear arrows to slither off the board
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How to Play & Interactive Game Simulator -->
+  <section id="gameplay" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Interactive Mechanics</span>
+        <h2 class="section-title">How Arrow Escape Plays</h2>
+        <p class="section-desc">
+          Test the core game mechanics right in your browser! Tap unobstructed arrows to release them, trigger escalating combo chimes, and avoid blocked collisions.
+        </p>
+      </div>
+
+      <div class="gameplay-wrapper">
+        <!-- Live Playable Canvas -->
+        <div class="interactive-board-container">
+          <div class="board-status-bar">
+            <span class="status-level">Interactive Mini-Board</span>
+            <div id="demoLives" class="status-hearts">❤️❤️❤️</div>
+            <span id="demoStreak" class="status-streak"></span>
+          </div>
+
+          <canvas id="puzzleCanvas" width="380" height="380"></canvas>
+
+          <div class="board-controls">
+            <button id="demoResetBtn" class="btn-demo-action">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              <span>Reset</span>
+            </button>
+            <button id="demoHintBtn" class="btn-demo-action">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6h8c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"/></svg>
+              <span>Hint</span>
+            </button>
+            <button id="demoAutoBtn" class="btn-demo-action">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>Auto-Play Demo</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Storytelling Step Walkthrough -->
+        <div class="story-steps">
+          <div class="step-card active">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h3>Observe the Exit Trajectory</h3>
+              <p>Each arrow points along a cardinal direction (Up, Down, Left, Right). Check whether its path to the perimeter is occupied by other arrows.</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h3>Tap to Slither Escape</h3>
+              <p>Tapping an unblocked arrow triggers a smooth slither animation along its geometric vertices off the board, earning dynamic combo tone pitch escalation.</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h3>Avoid Collisions (3 Hearts)</h3>
+              <p>Tapping an obstructed arrow causes an elastic bonk recoil and deducts 1 of your 3 hearts. Thoughtful planning prevents reckless tapping.</p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h3>Progress Through Shifting Grids</h3>
+              <p>As you clear levels, the board expands from introductory 4×4 grids all the way to colossal 20×20 grandmaster labyrinths with 92% density.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Game Design Philosophy</span>
+        <h2 class="section-title">Engineered for Mindful Focus</h2>
+        <p class="section-desc">
+          Arrow Escape rejects intrusive micro-transactions, forced countdowns, and deceptive mechanics in favor of pure, satisfying spatial logic.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">📐</div>
+          <h3>100% Solvability Guarantee</h3>
+          <p>Every single level is mathematically generated using reverse topological ordering (Reverse-DAG). Zero circular deadlocks or impossible boards—every puzzle has a verified logical solution.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">🐍</div>
+          <h3>Multi-Segment Winding Paths</h3>
+          <p>Arrows aren't limited to straight lines. Orthogonal 90° bends interlock across cells, requiring players to visualize layered bottlenecks and unlock order.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">🎵</div>
+          <h3>Procedural Audio Harmonics</h3>
+          <p>Clearing arrows in sequence builds combo streaks, dynamically escalating melodic synthesizer pitches for a deeply rewarding, tactile feedback loop.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">🛡️</div>
+          <h3>Atomic Disaster-Proof Save</h3>
+          <p>Progress is written via a 3-step atomic protocol (.tmp → .bak → .json). Your stars, highest unlocked level, and settings are never lost, even if your device dies mid-game.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">⚡</div>
+          <h3>60 FPS Ultra-Lightweight</h3>
+          <p>Built with Godot Engine's GL Compatibility renderer. Uses under 75 MB of RAM, produces negligible battery drain, and maintains a solid 60 FPS on any Android device.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrapper">🔒</div>
+          <h3>100% Offline & Private</h3>
+          <p>Zero data collection, zero analytics tracking, and zero account sign-in required. Play anytime, anywhere—on flights, subways, or off the grid.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 Thematic Worlds Section -->
+  <section id="worlds" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Content Progression</span>
+        <h2 class="section-title">The 8 Thematic Worlds</h2>
+        <p class="section-desc">
+          200 handcrafted levels span 8 distinct color palettes and evolving puzzle dimensions.
+        </p>
+      </div>
+
+      <div class="worlds-grid">
+        <!-- World 1 -->
+        <div class="world-card" style="--world-color: #38BDF8;">
+          <div class="world-card-top">
+            <span class="world-badge">WORLD 1 · LVL 1–25</span>
+            <span class="world-grid-size">4×4 → 6×6</span>
+          </div>
+          <h3 class="world-name">Sky Breeze</h3>
+          <p class="world-desc">Soft ice-blue tones and gentle onboarding introductory intersections.</p>
+          <div class="world-palette-preview">
+            <div class="palette-swatch" style="background:#EBF3FC;"></div>
+            <div class="palette-swatch" style="background:#3A80E0;"></div>
+            <div class="palette-swatch" style="background:#38BDF8;"></div>
+          </div>
+        </div>
+
+        <!-- World 2 -->
+        <div class="world-card" style="--world-color: #FB7185;">
+          <div class="world-card-top">
+            <span class="world-badge">WORLD 2 · LVL 26–50</span>
+            <span class="world-grid-size">6×6 → 8×8</span>
+          </div>
+          <h3 class="world-name">Sunset Coral</h3>
+          <p class="world-desc">Warm peach hues with multiple interdependent arrow trajectories.</p>
+          <div class="world-palette-preview">
+            <div class="palette-swatch" style="background:#FDF2EE;"></div>
+            <div class="palette-swatch" style="background:#E65C40;"></div>
+            <div class="palette-swatch" style="background:#FB7185;"></div>
+          </div>
+        </div>
+
+        <!-- World 3 -->
+        <div class="world-card" style="--world-color: #10B981;">
+          <div class="world-card-top">
+            <span class="world-badge">WORLD 3 · LVL 51–75</span>
+            <span class="world-grid-size">8×8 → 10×10</span>
+          </div>
+          <h3 class="world-name">Emerald Glade</h3>
+          <p class="world-desc">Mint mist backdrop featuring longer chain dependencies and winding turns.</p>
+          <div class="world-palette-preview">
+            <div class="palette-swatch" style="background:#EEF9F5;"></div>
+            <div class="palette-swatch" style="background:#10AC84;"></div>
+            <div class="palette-swatch" style="background:#34D399;"></div>
+          </div>
+        </div>
+
+        <!-- World 4 -->
+        <div class="world-card" style="--world-color: #A855F7;">
+          <div class="world-card-top">
+            <span class="world-badge">WORLD 4 · LVL 76–100</span>
+            <span class="world-grid-size">10×10 → 12×12</span>
+          </div>
+          <h3 class="world-name">Amethyst Twilight</h3>
+          <p class="world-desc">Lilac nightscapes with complex cluster locks and tighter safe exit paths.</p>
+          <div class="world-palette-preview">
+            <div class="palette-swatch" style="background:#F6F3FF;"></div>
+            <div class="palette-swatch" style="background:#6C5CE7;"></div>
+            <div class="palette-swatch" style="background:#C084FC;"></div>
+          </div>
+        </div>
+
+        <!-- World 5 -->
+        <div class="world-card" style="--world-color: #0284C7;">
+          <div class="world-card-top">
+            <span class="world-badge">WORLD 5 · LVL 101–125</span>
+            <span class="world-grid-size">12×12 → 14×14</span>
+          </div>
+          <h3 class="world-name">Oceanic Abyss</h3>
+          <p class="world-desc">Deep arctic marine palettes with high density board saturation up to 80%.</p>
+          <div class="world-palette-preview">
+            <div class="palette-swatch" style="background:#EAF6FF;"></div>
+            <div class="palette-swatch" style="background:#0984E3;"></div>
+            <div class="palette-swatch" style="background:#38BDF8;"></div>
+          </div>
+        </div>
+
+        <!-- World 6 -->
+        <div class="world-card" style="--world-color: #F59E0B;">
+          <div class="world-card-top">
+            <span class="world-badge">WORLD 6 · LVL 126–150</span>
+            <span class="world-grid-size">14×14 → 16×16</span>
+          </div>
+          <h3 class="world-name">Golden Dunes</h3>
+          <p class="world-desc">Sandstone ivory and desert gold labyrinth pathways with multi-turn snakes.</p>
+          <div class="world-palette-preview">
+            <div class="palette-swatch" style="background:#FDFBF2;"></div>
+            <div class="palette-swatch" style="background:#D48806;"></div>
+            <div class="palette-swatch" style="background:#FBBF24;"></div>
+          </div>
+        </div>
+
+        <!-- World 7 -->
+        <div class="world-card" style="--world-color: #E11D48;">
+          <div class="world-card-top">
+            <span class="world-badge">WORLD 7 · LVL 151–175</span>
+            <span class="world-grid-size">16×16 → 18×18</span>
+          </div>
+          <h3 class="world-name">Cherry Blossom</h3>
+          <p class="world-desc">Sakura petal accents and crimson ruby arrows in grandmaster density grids.</p>
+          <div class="world-palette-preview">
+            <div class="palette-swatch" style="background:#FFF0F3;"></div>
+            <div class="palette-swatch" style="background:#D63031;"></div>
+            <div class="palette-swatch" style="background:#F43F5E;"></div>
+          </div>
+        </div>
+
+        <!-- World 8 -->
+        <div class="world-card" style="--world-color: #64748B;">
+          <div class="world-card-top">
+            <span class="world-badge">WORLD 8 · LVL 176–200</span>
+            <span class="world-grid-size">18×18 → 20×20</span>
+          </div>
+          <h3 class="world-name">Midnight Obsidian</h3>
+          <p class="world-desc">Obsidian slate with neon accents. Colossal 20×20 grids for the ultimate test.</p>
+          <div class="world-palette-preview">
+            <div class="palette-swatch" style="background:#181E24;"></div>
+            <div class="palette-swatch" style="background:#2C3E50;"></div>
+            <div class="palette-swatch" style="background:#00F0FF;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Get in Touch</span>
+        <h2 class="section-title">Developer & Support Contact</h2>
+        <p class="section-desc">
+          Have feedback, feature ideas, or business inquiries? Drop a message below.
+        </p>
+      </div>
+
+      <div class="contact-wrapper">
+        <div class="contact-info-card">
+          <h3>Arrow Escape Studio</h3>
+          <p style="color:var(--text-secondary);line-height:1.7;">
+            Developed by Arslan Ali with an uncompromising focus on clean architecture, mathematical solvability, and premium casual mobile game design.
+          </p>
+
+          <div class="contact-details">
+            <div class="contact-detail-item">
+              <div class="detail-icon">👤</div>
+              <div>
+                <strong style="display:block;">Developer</strong>
+                <span style="color:var(--text-secondary);font-size:0.9rem;">Arslan Ali</span>
+              </div>
+            </div>
+
+            <div class="contact-detail-item">
+              <div class="detail-icon">📧</div>
+              <div>
+                <strong style="display:block;">Support & Inquiries</strong>
+                <span style="color:var(--text-secondary);font-size:0.9rem;">arslanali.dev@gmail.com</span>
+              </div>
+            </div>
+
+            <div class="contact-detail-item">
+              <div class="detail-icon">📦</div>
+              <div>
+                <strong style="display:block;">Open Source Monorepo</strong>
+                <a href="https://github.com/DeveloperArslanAli/Arrow-Escape" target="_blank" style="color:var(--accent-cyan);font-size:0.9rem;">github.com/DeveloperArslanAli/Arrow-Escape</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form id="contactForm" class="contact-form">
+          <div class="form-group">
+            <label for="contactName">Your Name</label>
+            <input type="text" id="contactName" class="form-control" placeholder="Jane Doe" required>
+          </div>
+
+          <div class="form-group">
+            <label for="contactEmail">Your Email</label>
+            <input type="email" id="contactEmail" class="form-control" placeholder="jane@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="contactMessage">Message or Feedback</label>
+            <textarea id="contactMessage" class="form-control" placeholder="Love the winding arrow puzzles! Here's a suggestion..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" style="justify-content:center;margin-top:8px;">
+            <span>Send Message</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand">
+            <img src="assets/logo.svg" alt="Arrow Escape Logo" class="brand-logo">
+            <span>Arrow Escape</span>
+          </div>
+          <p>
+            A publication-ready casual logic puzzle game engineered with Godot 4.x & Android API 36 compliance.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#gameplay">How to Play</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#worlds">8 Thematic Worlds</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Legal & Policies</h4>
+          <ul class="footer-links">
+            <li><a href="privacy.html" data-open-privacy>Privacy Policy</a></li>
+            <li><a href="terms.html" data-open-terms>Terms & Conditions</a></li>
+            <li><a href="privacy.html" target="_blank">Privacy (Direct Link)</a></li>
+            <li><a href="terms.html" target="_blank">Terms (Direct Link)</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Download</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/DeveloperArslanAli/Arrow-Escape" target="_blank">Google Play Store (Target API 36)</a></li>
+            <li><a href="https://github.com/DeveloperArslanAli/Arrow-Escape/releases" target="_blank">GitHub Releases (.aab / .apk)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Developer Arslan Ali. All rights reserved.</span>
+        <span>Package: <code>com.developerarslanali.arrowescape</code> · v1.0.2 (Code 3)</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal: Privacy Policy -->
+  <div id="privacyModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2>Privacy Policy</h2>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Last Updated:</strong> September 27, 2026</p>
+        <p><strong>App:</strong> Arrow Escape (<code>com.developerarslanali.arrowescape</code>)</p>
+        <h3>1. 100% Offline & Zero Data Collection</h3>
+        <p>Arrow Escape is designed as an offline-first single-player puzzle game. We do not collect, transmit, store, or share any personal data, device identifiers, location information, or analytics.</p>
+        <h3>2. Local Storage</h3>
+        <p>All game progress (stars, best moves, and sound preferences) is stored strictly on your local device storage using Godot's sandboxed atomic write protocol.</p>
+        <h3>3. Full Legal Document</h3>
+        <p>You can view the full standalone document at <a href="privacy.html" target="_blank" style="color:var(--accent-cyan)">privacy.html</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Terms & Conditions -->
+  <div id="termsModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2>Terms & Conditions</h2>
+        <button class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Effective Date:</strong> September 27, 2026</p>
+        <h3>1. License</h3>
+        <p>Arrow Escape is personal entertainment software developed by Developer Arslan Ali. You are granted a personal, non-exclusive license to play the game on compatible Android and desktop devices.</p>
+        <h3>2. Full Legal Document</h3>
+        <p>You can view the full standalone document at <a href="terms.html" target="_blank" style="color:var(--accent-cyan)">terms.html</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application & Simulator Scripts -->
+  <script src="scripts/game-demo.js"></script>
+  <script src="scripts/app.js"></script>
+</body>
+</html>
