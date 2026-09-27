@@ -4,7 +4,8 @@
 **Last Updated:** September 27, 2026  
 **Developer:** Developer Arslan Ali  
 **Package Name:** `com.developerarslanali.arrowescape`  
-**Target API:** 34 (Android 14) | **Min API:** 24 (Android 7.0)
+**Version:** `2.0.0` (Version Code: `4`)  
+**Target API:** 36 (Android 16) | **Min API:** 24 (Android 7.0 Nougat)
 
 ---
 

@@ -1,12 +1,13 @@
-# 🚀 Google Play Store Publication Checklist & Release Guide
+# 🚀 Google Play Store Publication Checklist & Release Guide (Release v2.0)
 
 **App Name:** Arrow Escape: Puzzle Grid  
 **Package Identifier:** `com.developerarslanali.arrowescape`  
-**Target SDK:** 34 (Android 14) | **Min SDK:** 24 (Android 7.0 Nougat)  
-**Supported Architectures:** ARM64-v8a (64-bit mandatory), ARMv7 (32-bit legacy)  
+**Version Code:** `4` | **Version Name:** `2.0.0`  
+**Target SDK:** 36 (Android 16) | **Min SDK:** 24 (Android 7.0 Nougat)  
+**Supported Architectures:** ARM64-v8a (64-bit mandatory), ARMv7 (32-bit legacy fallback)  
 **Release Formats:**
-- **`.aab` (Android App Bundle)**: Mandated for Google Play Console distribution.
-- **`.apk` (Universal Release)**: For direct sideloading and hardware device validation.
+- **`.aab` (Android App Bundle)**: Mandated for Google Play Console distribution (Target API 36, R8-shrunk).
+- **`.apk` (Universal Release)**: For direct hardware sideloading and QA validation.
 
 ---
 
@@ -16,8 +17,8 @@
 > **Question:** *"If we go with Gradle build, is it working? What is the best approach?"*
 >
 > **Answer & Recommendation:**
-> 1. **Gradle Build is MANDATORY for Google Play Store:** Google Play Store enforces the **Android App Bundle (`.aab`)** format for all newly registered applications since August 2021. In Godot 4, the **only** mechanism that produces compliant `.aab` bundles with Google Play App Signing, split architectures, and modern Android 14 (API 34) tooling is the **Gradle Build workflow** (`gradle_build/use_gradle_build = true` and `gradle_build/export_format = 1`).
-> 2. **Precompiled Template Export (`.apk`) is for Testing & Sideloading:** Standard precompiled export generates a single universal `.apk`. This is optimal for rapid iterative testing on connected Android devices via ADB, but Google Play Console will reject an `.apk` for new production apps.
+> 1. **Gradle Build is MANDATORY for Google Play Store:** Google Play Store enforces the **Android App Bundle (`.aab`)** format and Target API 36 compliance. In Godot 4, the **only** mechanism that produces compliant `.aab` bundles with Google Play App Signing, split architectures, Target SDK 36, and R8 bytecode optimization is the **Gradle Build workflow** (`gradle_build/use_gradle_build = true` and `gradle_build/export_format = 1`).
+> 2. **Precompiled Template Export (`.apk`) is for Testing & Sideloading:** Standard precompiled export generates a single universal `.apk`. This is optimal for rapid iterative testing on connected Android devices via ADB, but Google Play Console requires `.aab` for production store distribution.
 > 3. **The Dual-Artifact Approach:**
 >    - Deliverable A: `ArrowEscape.aab` (Signed Release Bundle for Google Play Console submission)
 >    - Deliverable B: `ArrowEscape-release.apk` (Signed Release APK for immediate direct device testing)
@@ -41,14 +42,15 @@ A dedicated 2048-bit RSA release keystore has been provisioned and configured:
 
 ---
 
-## 3. Google Play Console Form Declarations
+## 3. Google Play Console Form Declarations & Policies
 
 ### A. Data Safety Section
 - **Does your app collect or share any user data?** ➡️ Select **"No"**.
 - **Data Encrypted in Transit:** Not applicable (zero network data).
 - **Account Creation / Deletion:** Not applicable (pure offline game).
-- **Privacy Policy URL:** Host `docs/PRIVACY_POLICY.md` on GitHub Pages or a public gist:
-  `https://github.com/DeveloperArslanAli/Arrow-Escape/blob/main/docs/PRIVACY_POLICY.md`
+- **Privacy Policy URL:** Enter your official hosted privacy policy URL:
+  `https://developerarslanali.github.io/Arrow-Escape/privacy.html`  
+  *(Alternative raw URL: `https://raw.githubusercontent.com/DeveloperArslanAli/Arrow-Escape/main/docs/PRIVACY_POLICY.md`)*
 
 ### B. Target Audience and Content
 - **Target Age:** Everyone (Pegi 3 / ESRB Everyone).
@@ -63,6 +65,19 @@ A dedicated 2048-bit RSA release keystore has been provisioned and configured:
 - **Active Android Permissions in Manifest:**
   - `android.permission.VIBRATE` (Haptic feedback when tapping arrows)
   - `android.permission.INTERNET` is **disabled**.
+
+### D. Testing Track & Testers Configuration (Fix for Warning)
+- When publishing to a **Closed Testing** track:
+  1. Open **Testing > Closed testing** in Google Play Console.
+  2. Select your track and click on the **Testers** tab.
+  3. Create an email list of testers (e.g. your own email address) and save.
+  4. Copy the **Join on Android** or **Join on the web** opt-in URL.
+- When publishing directly to **Production**:
+  - No tester list is needed; proceed with standard rollout.
+
+### E. Native Debug Symbols (Fix for Warning)
+- Gradle automatically extracts native symbols into the AAB bundle via `debugSymbolLevel = 'SYMBOL_TABLE'`.
+- If Google Play shows a yellow advisory notice regarding debug symbols, this is non-blocking and you can safely continue.
 
 ---
 

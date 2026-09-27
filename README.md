@@ -236,21 +236,26 @@ The project is fully publication-ready with dual production presets configured i
 | **`.aab`** | `Android (AAB - Play Store)` | `build/ArrowEscape.aab` | **Google Play Console submission** (Gradle build, App Signing, split architectures) |
 | **`.apk`** | `Android (APK - Release)` | `build/ArrowEscape-release.apk` | **Direct hardware sideloading** & QA test validation |
 
-### Technical Specifications
+### Technical Specifications (Release v2.0.0)
 - **Package Identifier:** `com.developerarslanali.arrowescape`
-- **Target SDK:** API 34 (Android 14 UpsideDownCake) — *Fully compliant with Google Play target level mandates*
+- **Version:** `2.0.0` (Version Code: `4`)
+- **Target SDK:** API 36 (Android 16) — *Compliant with 2026 Google Play target level mandates*
 - **Min SDK:** API 24 (Android 7.0 Nougat) — *Supports 95%+ of active Android devices worldwide*
-- **Supported Architectures:** `arm64-v8a` (64-bit mandatory), `armeabi-v7a` (32-bit legacy)
+- **Supported Architectures:** `arm64-v8a` (64-bit mandatory), `armeabi-v7a` (32-bit legacy fallback)
 - **Signing Keystore:** 2048-bit RSA release key (`keystores/release.keystore`, alias `arrowescape`, 10,000 days validity)
+- **Code Optimization:** R8 dead-code shrinking & obfuscation enabled (0.55 MB DEX, 90% reduction) with embedded ProGuard mapping.
 - **Orientation & Render:** Fixed Portrait with `gl_compatibility` for buttery 60 FPS and negligible battery consumption.
 
-### Export Commands via Godot CLI
+### Direct Fast Gradle Release Commands
 ```powershell
-# Build signed Play Store App Bundle (.aab via Gradle)
-godot --headless --export-release "Android (AAB - Play Store)" build/ArrowEscape.aab
+# In android/build directory:
+$env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot"
 
-# Build signed Release APK (.apk for immediate device sideloading)
-godot --headless --export-release "Android (APK - Release)" build/ArrowEscape-release.apk
+# 1. Build signed Play Store App Bundle (.aab via Gradle with R8)
+.\gradlew.bat bundleStandardRelease
+
+# 2. Build signed Universal Release APK (.apk for sideloading)
+.\gradlew.bat assembleStandardRelease
 ```
 
 ### Publication Documentation & Store Assets
