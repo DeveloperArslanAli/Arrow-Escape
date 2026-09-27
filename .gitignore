@@ -11,12 +11,20 @@ Thumbs.db
 *.swp
 *~
 
-# Export outputs
+# Export outputs & Gradle builds
+build/
 builds/
 *.apk
 *.aab
+*.idsig
+android/build/.gradle/
+android/build/build/
+android/build/assetPackInstallTime/build/
+
+# Keystores (keep repo public safe)
+keystores/*.keystore
 
 # Python
 __pycache__/
 *.pyc
-
+tools/chunks/

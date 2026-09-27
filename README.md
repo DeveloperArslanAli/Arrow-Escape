@@ -227,19 +227,36 @@ TEST RUN COMPLETE: 7 Passed, 0 Failed
 
 ---
 
-## 📱 Android Build & Export
+## 📱 Android Publication & Google Play Store Readiness
 
-The project is pre-configured with Android export presets in `export_presets.cfg`:
-- **Target SDK**: Android 34 (Android 14 UpsideDownCake)
-- **Min SDK**: Android 24 (Android 7.0 Nougat)
-- **Supported Architectures**: `arm64-v8a`, `armeabi-v7a`
-- **Orientation**: Portrait (720x1280 base viewport with dynamic safe-area insets)
-- **Renderer**: `gl_compatibility` for ultra-low battery draw and steady 60 FPS on all chipsets.
+The project is fully publication-ready with dual production presets configured in `export_presets.cfg`:
 
-Export command via Godot CLI:
-```bash
-godot --headless --export-release "Android" build/ArrowEscape.aab
+| Format | Target Preset | Output File | Intended Purpose |
+| :--- | :--- | :--- | :--- |
+| **`.aab`** | `Android (AAB - Play Store)` | `build/ArrowEscape.aab` | **Google Play Console submission** (Gradle build, App Signing, split architectures) |
+| **`.apk`** | `Android (APK - Release)` | `build/ArrowEscape-release.apk` | **Direct hardware sideloading** & QA test validation |
+
+### Technical Specifications
+- **Package Identifier:** `com.developerarslanali.arrowescape`
+- **Target SDK:** API 34 (Android 14 UpsideDownCake) — *Fully compliant with Google Play target level mandates*
+- **Min SDK:** API 24 (Android 7.0 Nougat) — *Supports 95%+ of active Android devices worldwide*
+- **Supported Architectures:** `arm64-v8a` (64-bit mandatory), `armeabi-v7a` (32-bit legacy)
+- **Signing Keystore:** 2048-bit RSA release key (`keystores/release.keystore`, alias `arrowescape`, 10,000 days validity)
+- **Orientation & Render:** Fixed Portrait with `gl_compatibility` for buttery 60 FPS and negligible battery consumption.
+
+### Export Commands via Godot CLI
+```powershell
+# Build signed Play Store App Bundle (.aab via Gradle)
+godot --headless --export-release "Android (AAB - Play Store)" build/ArrowEscape.aab
+
+# Build signed Release APK (.apk for immediate device sideloading)
+godot --headless --export-release "Android (APK - Release)" build/ArrowEscape-release.apk
 ```
+
+### Publication Documentation & Store Assets
+- 📋 [**Play Store Release Checklist**](file:///docs/PLAYSTORE_RELEASE_CHECKLIST.md) — Complete walkthrough, copywriting metadata, and declaration forms.
+- 🔒 [**Privacy Policy**](file:///docs/PRIVACY_POLICY.md) — 100% offline, zero data collection disclosure for Play Console.
+- 🎨 **Store Graphics:** High-res 512x512 app icon (`assets/store/icon_512.png`) and 1024x500 feature graphic (`assets/store/feature_graphic_1024x500.png`).
 
 ---
 
